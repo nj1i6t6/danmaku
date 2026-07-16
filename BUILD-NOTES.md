@@ -6,7 +6,7 @@
 ## 工具鏈
 
 - Backend／Shared／Extension：Node.js 20 與 npm lockfile。
-- Desktop：Rust 至少 1.85.0、Tauri v2，以及目標作業系統的原生依賴。
+- Desktop：Rust 至少 1.88.0、Tauri v2，以及目標作業系統的原生依賴。
 - Android：JDK 17、Android SDK 34、repository 內 Gradle wrapper。
 - Browser QA：Chromium／Chrome 或 Edge；unpacked MV3 測試需要允許載入本機擴充功能的 runner。
 

@@ -58,12 +58,12 @@ test('required CI and native/package workflows contain their verification gates'
   }
 });
 
-test('Tauri manifest and hosted workflows use the minimum Edition 2024 capable Rust toolchain', async () => {
+test('Tauri manifest and hosted workflows use the locked dependency MSRV', async () => {
   const cargo = await read('desktop/src-tauri/Cargo.toml');
-  assert.match(cargo, /^rust-version = "1\.85\.0"$/m);
+  assert.match(cargo, /^rust-version = "1\.88\.0"$/m);
   for (const name of ['ci.yml', 'build-windows.yml', 'build-macos.yml']) {
     const source = await read(`.github/workflows/${name}`);
-    assert.match(source, /toolchain:\s*['"]1\.85\.0['"]/, `${name} must use Rust 1.85.0`);
+    assert.match(source, /toolchain:\s*['"]1\.88\.0['"]/, `${name} must use Rust 1.88.0`);
   }
 });
 

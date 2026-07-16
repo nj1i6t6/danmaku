@@ -37,7 +37,7 @@ Chrome／Edge 擴充功能在安裝時要求一般 `http://*/*`、`https://*/*` 
 
 ## 從原始碼驗證
 
-需求：Node.js 20、npm、Rust（`desktop/src-tauri/Cargo.toml` 要求至少 1.85.0）、Tauri v2 的平台相依套件；Android 需 JDK 17 與 Android SDK 34。
+需求：Node.js 20、npm、Rust（`desktop/src-tauri/Cargo.toml` 要求至少 1.88.0）、Tauri v2 的平台相依套件；Android 需 JDK 17 與 Android SDK 34。
 
 ```bash
 # Backend
