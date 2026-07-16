@@ -1,0 +1,43 @@
+[Unit]
+Description=Danmaku Overlay backend and landing service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=stock-danmaku
+Group=stock-danmaku
+WorkingDirectory=/opt/stock-danmaku/current
+ExecStart=/usr/bin/node server.js
+Environment=NODE_ENV=production
+EnvironmentFile=-/etc/stock-danmaku/stock-danmaku.env
+Restart=always
+RestartSec=5
+TimeoutStopSec=90
+KillSignal=SIGTERM
+UMask=0077
+
+# Least privilege and filesystem isolation. MemoryDenyWriteExecute is intentionally
+# omitted because the Node/V8 JIT requires executable memory mappings.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+RemoveIPC=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+StateDirectory=stock-danmaku
+StateDirectoryMode=0700
+
+[Install]
+WantedBy=multi-user.target

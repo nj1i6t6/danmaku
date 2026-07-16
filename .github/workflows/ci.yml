@@ -1,0 +1,136 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node-and-policy:
+    name: Node, browser core, policy, and public source
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: |
+            app/package-lock.json
+            clients/web-overlay/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci --prefix app
+
+      - name: Install shared client dependencies
+        run: npm ci --prefix clients/web-overlay
+
+      - name: Test backend
+        run: npm test --prefix app
+
+      - name: Audit backend production dependencies
+        run: cd app && npm audit --omit=dev --audit-level=high
+
+      - name: Test shared and extension units
+        run: npm test --prefix clients/web-overlay
+
+      - name: Build desktop and extension generated output
+        env:
+          DANMAKU_SERVER_URL: http://127.0.0.1:3999
+        run: npm run build --prefix clients/web-overlay
+
+      - name: Test desktop JavaScript and cross-client contracts
+        run: node --test desktop/tests/*.test.mjs
+
+      - name: Test repository policy tools
+        run: node --test --test-concurrency=1 scripts/tests/*.test.mjs
+
+      - name: Verify retired code stays absent
+        run: node scripts/verify-retired-stock.mjs
+
+      - name: Verify public source allowlist
+        run: node scripts/verify-public-tree.mjs --source .
+
+      - name: Export and verify sanitized public source
+        run: |
+          node scripts/export-public.mjs --output "${RUNNER_TEMP}/danmaku-public-source"
+          node "${RUNNER_TEMP}/danmaku-public-source/scripts/verify-public-tree.mjs" --source "${RUNNER_TEMP}/danmaku-public-source"
+
+      - name: Package and verify browser release candidate
+        run: |
+          npm run package:extension --prefix clients/web-overlay
+          node scripts/verify-release-candidate.mjs --root .
+
+      - name: Verify tracked tree has no generated drift
+        run: |
+          git diff --check
+          test -z "$(git status --short)"
+
+  rust:
+    name: Tauri Rust tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install Tauri Linux prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf \
+            libsecret-1-dev
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.77.2'
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: desktop/src-tauri
+
+      - name: Test Tauri Rust
+        run: cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked
+
+  android:
+    name: Android unit, lint, and debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android platform packages
+        run: sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Test, lint, and assemble Android
+        env:
+          DANMAKU_SERVER_URL: https://example.invalid
+        run: android/gradlew -p android testDebugUnitTest lintDebug assembleDebug --no-daemon

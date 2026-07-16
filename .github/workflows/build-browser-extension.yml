@@ -1,0 +1,102 @@
+name: Build and Verify Browser Extension
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: |
+            clients/web-overlay/package-lock.json
+            app/package-lock.json
+
+      - name: Install shared client dependencies
+        run: npm ci --prefix clients/web-overlay
+
+      - name: Install local Socket.IO fixture dependencies
+        run: npm ci --prefix app
+
+      - name: Install Playwright Chromium
+        run: cd clients/web-overlay && npx playwright install --with-deps chromium
+
+      - name: Resolve Playwright Chromium path
+        id: chromium
+        working-directory: clients/web-overlay
+        run: echo "path=$(node --input-type=module -e 'import { chromium } from "@playwright/test"; process.stdout.write(chromium.executablePath())')" >> "$GITHUB_OUTPUT"
+
+      - name: Test shared and extension units
+        run: npm test --prefix clients/web-overlay
+
+      - name: Build extension
+        env:
+          DANMAKU_SERVER_URL: http://127.0.0.1:3999
+        run: npm run build:extension --prefix clients/web-overlay
+
+      - name: Verify generated extension
+        run: npm run verify:extension --prefix clients/web-overlay
+
+      - name: Run landing responsive and local-network QA
+        env:
+          CHROMIUM_PATH: ${{ steps.chromium.outputs.path }}
+        run: npm run test:landing-e2e --prefix clients/web-overlay
+
+      - name: Run executable Shadow DOM browser tests
+        env:
+          CHROMIUM_PATH: ${{ steps.chromium.outputs.path }}
+        run: npm run test:e2e --prefix clients/web-overlay
+
+      - name: Run genuine unpacked MV3 lifecycle test
+        shell: bash
+        env:
+          UNPACKED_CHROMIUM_PATH: ${{ steps.chromium.outputs.path }}
+        run: npm run test:e2e:unpacked --prefix clients/web-overlay
+
+      - name: Build loopback desktop output for release candidate
+        env:
+          DANMAKU_SERVER_URL: http://127.0.0.1:3999
+        run: npm run build:desktop --prefix clients/web-overlay
+
+      - name: Package loopback extension for release candidate
+        run: npm run package:extension --prefix clients/web-overlay
+
+      - name: Verify local release-candidate invariants
+        run: node scripts/verify-release-candidate.mjs --root .
+
+      - name: Build production extension
+        env:
+          DANMAKU_SERVER_URL: https://danmaku.kolvid.app
+        run: npm run build:extension --prefix clients/web-overlay
+
+      - name: Verify production extension
+        run: npm run verify:extension --prefix clients/web-overlay
+
+      - name: Package extension and SHA-256 checksum
+        run: |
+          npm run package:extension --prefix clients/web-overlay
+          cd release/browser-extension
+          sha256sum --check danmaku-overlay-extension-*.zip.sha256
+
+      - name: Upload verified extension package
+        uses: actions/upload-artifact@v6
+        with:
+          name: danmaku-overlay-browser-extension
+          if-no-files-found: error
+          path: |
+            release/browser-extension/*.zip
+            release/browser-extension/*.zip.sha256

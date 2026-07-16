@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1416">
+  <meta name="description" content="彈幕 Overlay：把即時彈幕疊在 Android、Windows、macOS、Chrome 與 Edge 的畫面上。">
+  <meta property="og:title" content="彈幕 Overlay">
+  <meta property="og:description" content="跨 Android、桌面與瀏覽器的即時彈幕 Overlay。">
+  <meta property="og:type" content="website">
+  <title>彈幕 Overlay</title>
+  <link rel="icon" href="/icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/status.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳至主要內容</a>
+
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="彈幕 Overlay 首頁">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="brand-word">彈幕 <strong>Overlay</strong></span>
+    </a>
+    <nav class="primary-nav" aria-label="主要導覽">
+      <a href="#downloads">平台入口</a>
+      <a href="#why">怎麼工作</a>
+      <a href="#privacy">隱私與安全</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker">CROSS-SCREEN DANMAKU / 01</p>
+        <h1 id="hero-title">讓彈幕，<span>留在畫面上。</span></h1>
+        <p class="hero-lede">彈幕 Overlay 把即時訊息放回你正在觀看、遊玩或工作的畫面，不把你拉去另一個聊天室。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#downloads">找到你的入口 <span aria-hidden="true">↘</span></a>
+          <div class="configurable-link" data-link-key="repository">
+            <button class="text-button is-pending" type="button" disabled data-link-label="查看公開原始碼">查看公開原始碼 <span>準備中</span></button>
+          </div>
+        </div>
+        <p class="hero-note"><span class="note-dot" aria-hidden="true"></span>不讀取、不上傳宿主頁面內容；只顯示你選擇的彈幕。</p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="visual-label visual-label-top">LIVE LAYER <span>00:18:42</span></div>
+        <div class="screen-frame">
+          <div class="screen-chrome"><span class="screen-light"></span><span></span><span></span><b>正在觀看的畫面</b></div>
+          <div class="screen-field">
+            <div class="screen-grid"></div>
+            <p class="screen-copy">your screen<br><em>＋</em> their voices</p>
+            <div class="danmaku-track track-one"><span>這裡也能看見</span><i>♡ 128</i></div>
+            <div class="danmaku-track track-two"><span>畫面不用切換，彈幕自然穿過</span></div>
+            <div class="danmaku-track track-three"><span>一起看，就在這一層</span><i>LIVE</i></div>
+            <div class="danmaku-track track-four"><span>Overlay / on</span></div>
+          </div>
+        </div>
+        <p class="visual-label visual-label-bottom"><span>ANDROID · DESKTOP · BROWSER</span> <b>●</b></p>
+      </div>
+    </section>
+
+    <section id="downloads" class="downloads" aria-labelledby="downloads-title" data-github-releases="https://github.com/nj1i6t6/danmaku/releases" data-chrome-store="" data-edge-store="" data-repository="https://github.com/nj1i6t6/danmaku">
+      <!-- GitHub destinations are verified HTTPS pages; blank store values intentionally keep Chrome and Edge disabled. -->
+      <div class="section-intro">
+        <div>
+          <p class="kicker">五個入口 / 一個習慣</p>
+          <h2 id="downloads-title">從你正在看的裝置開始</h2>
+        </div>
+        <p>Android、桌面與瀏覽器各有自己的安裝方式；入口只在檔案與商店頁面準備好後開啟。</p>
+      </div>
+
+      <div class="platform-grid">
+        <article class="platform-card" data-platform="android">
+          <div class="platform-topline"><span class="platform-icon" aria-hidden="true">A</span><span>01 / MOBILE</span></div>
+          <p class="platform-name">Android</p>
+          <h3>跟著手機一起浮著看</h3>
+          <p>以系統懸浮顯示把彈幕放在其他 App 上方，切換內容時不必重新開場。</p>
+          <div class="card-footer">
+            <span class="delivery-label">GITHUB RELEASES</span>
+            <button class="entry-button is-pending" type="button" disabled data-link-key="githubReleases" data-link-label="下載 Android 版">下載 Android 版 <span>即將提供</span></button>
+          </div>
+        </article>
+
+        <article class="platform-card" data-platform="windows">
+          <div class="platform-topline"><span class="platform-icon" aria-hidden="true">W</span><span>02 / DESKTOP</span></div>
+          <p class="platform-name">Windows</p>
+          <h3>桌面上方的一層訊息</h3>
+          <p>透明、置頂的桌面 Overlay，保留底下遊戲、影片或工作視窗的操作空間。</p>
+          <div class="card-footer">
+            <span class="delivery-label">GITHUB RELEASES</span>
+            <button class="entry-button is-pending" type="button" disabled data-link-key="githubReleases" data-link-label="下載 Windows 版">下載 Windows 版 <span>即將提供</span></button>
+          </div>
+        </article>
+
+        <article class="platform-card" data-platform="macos">
+          <div class="platform-topline"><span class="platform-icon" aria-hidden="true">M</span><span>03 / DESKTOP</span></div>
+          <p class="platform-name">macOS</p>
+          <h3>安靜貼在視窗邊緣</h3>
+          <p>在 macOS 上維持輕盈的浮層體驗，讓對話靠近內容，而不是搶走注意力。</p>
+          <div class="card-footer">
+            <span class="delivery-label">GITHUB RELEASES</span>
+            <button class="entry-button is-pending" type="button" disabled data-link-key="githubReleases" data-link-label="下載 macOS 版">下載 macOS 版 <span>即將提供</span></button>
+          </div>
+        </article>
+
+        <article class="platform-card platform-card-browser" data-platform="chrome">
+          <div class="platform-topline"><span class="platform-icon" aria-hidden="true">C</span><span>04 / BROWSER</span></div>
+          <p class="platform-name">Chrome</p>
+          <h3>瀏覽器裡，直接疊上去</h3>
+          <p>在已授權的網站顯示 Overlay，不讀取、不分析宿主頁面內容。</p>
+          <div class="card-footer">
+            <span class="delivery-label">CHROME WEB STORE</span>
+            <button class="entry-button is-pending" type="button" disabled data-link-key="chromeStore" data-link-label="前往 Chrome 商店">前往 Chrome 商店 <span>即將提供</span></button>
+          </div>
+        </article>
+
+        <article class="platform-card platform-card-browser" data-platform="edge">
+          <div class="platform-topline"><span class="platform-icon" aria-hidden="true">E</span><span>05 / BROWSER</span></div>
+          <p class="platform-name">Edge</p>
+          <h3>沿用你的瀏覽器節奏</h3>
+          <p>為 Edge 預留獨立商店入口；安裝與權限說明會和正式版本一起公開。</p>
+          <div class="card-footer">
+            <span class="delivery-label">MICROSOFT EDGE ADD-ONS</span>
+            <button class="entry-button is-pending" type="button" disabled data-link-key="edgeStore" data-link-label="前往 Edge 商店">前往 Edge 商店 <span>即將提供</span></button>
+          </div>
+        </article>
+      </div>
+      <p class="section-footnote"><span aria-hidden="true">↳</span> GitHub Releases 與商店入口只接受已驗證的 HTTPS 連結；未設定時不會導向不存在的頁面。</p>
+    </section>
+
+    <section id="why" class="why-section" aria-labelledby="why-title">
+      <div class="why-heading">
+        <p class="kicker">它不是另一個聊天室</p>
+        <h2 id="why-title">訊息穿過畫面，<br><span>注意力留在內容。</span></h2>
+      </div>
+      <div class="feature-list">
+        <article class="feature-item">
+          <span class="feature-mark" aria-hidden="true">—</span>
+          <div><h3>顯示，而不是接管</h3><p>Overlay 只佔一層視覺空間，不把你送進需要重新理解的聊天介面。</p></div>
+        </article>
+        <article class="feature-item">
+          <span class="feature-mark" aria-hidden="true">—</span>
+          <div><h3>跨裝置，但不跨界</h3><p>每個入口各自遵循平台的安裝與權限習慣，不以一套體驗硬套所有螢幕。</p></div>
+        </article>
+        <article class="feature-item">
+          <span class="feature-mark" aria-hidden="true">—</span>
+          <div><h3>透明的預設</h3><p>下載尚未發布時就清楚標示準備中；連結、權限與發布狀態都不藏在按鈕背後。</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="privacy" class="trust-section" aria-labelledby="trust-title">
+      <div class="trust-heading">
+        <p class="kicker">PRIVACY BY DESIGN</p>
+        <h2 id="trust-title">只做顯示所需的事</h2>
+        <p>彈幕可以很熱鬧，權限說明不必模糊。</p>
+      </div>
+      <div class="trust-details">
+        <div class="trust-block" id="security">
+          <p class="trust-label">安全</p>
+          <h3>權限有邊界</h3>
+          <p>瀏覽器版本安裝時會要求一般 HTTP 與 HTTPS 網站權限，才能在已授權網站自動顯示 Overlay。</p>
+          <p>此權限只用來建立彈幕 Overlay，不讀取、上傳或分析宿主頁面內容、表單、Cookie 或瀏覽資料。</p>
+        </div>
+        <div class="trust-block" data-static-only>
+          <p class="trust-label">靜態入口</p>
+          <h3 id="service-title">零後端請求</h3>
+          <p id="static-service-note" class="status status-ok">純前端頁面</p>
+          <p class="trust-caption">此頁只載入同源靜態資產；不請求健康端點，也不建立即時連線。</p>
+          <noscript><p class="noscript">JavaScript 停用時，尚未設定的下載入口會繼續保持停用。</p></noscript>
+        </div>
+      </div>
+    </section>
+
+    <section class="legal-section" aria-labelledby="legal-title">
+      <div class="section-intro legal-intro">
+        <div><p class="kicker">READ BEFORE INSTALL</p><h2 id="legal-title">把必要的話，放在入口旁邊</h2></div>
+        <p>正式版本會持續補齊對應文件；在此之前，先保留清楚可到達的導覽位置。</p>
+      </div>
+      <div class="legal-grid">
+        <article class="legal-card" id="terms"><p class="trust-label">條款</p><h3>合理使用</h3><p>請只在你有權使用的畫面與服務中顯示彈幕，並遵守所在地與平台規範。</p></article>
+        <article class="legal-card" id="license"><p class="trust-label">授權</p><h3>公開原始碼</h3><p>原始碼、授權條文與自架說明已在公開庫入口提供。</p></article>
+        <article class="legal-card" id="about"><p class="trust-label">關於</p><h3>stock-danmaku</h3><p>一個把即時彈幕帶回內容旁邊的 Overlay 專案；不建立 Web 聊天客戶端。</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <a class="brand" href="/" aria-label="彈幕 Overlay 首頁">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-word">彈幕 <strong>Overlay</strong></span>
+      </a>
+      <p>把對話留在你正在看的畫面上。</p>
+    </div>
+    <div class="footer-links">
+      <nav aria-label="法律與專案導覽">
+        <a href="#privacy">隱私</a>
+        <a href="#security">安全</a>
+        <a href="#terms">條款</a>
+        <a href="#license">授權</a>
+      </nav>
+      <div class="configurable-link footer-repository" data-link-key="repository">
+        <button class="text-button is-pending" type="button" disabled data-link-label="公開原始碼">公開原始碼 <span>準備中</span></button>
+      </div>
+    </div>
+    <p class="footer-copyright">© stock-danmaku / Overlay</p>
+  </footer>
+</body>
+</html>

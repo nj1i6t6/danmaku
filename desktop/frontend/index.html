@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>彈幕 Overlay</title>
+  <link rel="stylesheet" href="generated/overlay.css">
+</head>
+<body>
+  <main id="overlay-root"></main>
+
+  <!-- Socket.IO client is bundled so the overlay remains operable offline. -->
+  <script src="vendor/socket.io.min.js"></script>
+  <script type="module" src="js/overlay-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+name: Build Unsigned macOS Desktop Artifacts
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: clients/web-overlay/package-lock.json
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.77.2'
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: desktop/src-tauri
+
+      - name: Install shared client dependencies
+        run: npm ci --prefix clients/web-overlay
+
+      - name: Test shared and extension units
+        run: node --test --test-concurrency=1 clients/web-overlay/tests/client-identity.test.mjs clients/web-overlay/tests/cross-platform-contract.test.mjs clients/web-overlay/tests/desktop-nickname.test.mjs clients/web-overlay/tests/desktop-panel.test.mjs clients/web-overlay/tests/desktop-settings-adapter.test.mjs clients/web-overlay/tests/extension-background.test.mjs clients/web-overlay/tests/extension-message-schema.test.mjs clients/web-overlay/tests/extension-storage.test.mjs clients/web-overlay/tests/hsv-color-picker.test.mjs clients/web-overlay/tests/overlay-controller.test.mjs clients/web-overlay/tests/overlay-css.test.mjs clients/web-overlay/tests/overlay-layout.test.mjs clients/web-overlay/tests/overlay-template.test.mjs clients/web-overlay/tests/room-manager.test.mjs clients/web-overlay/tests/room-model.test.mjs clients/web-overlay/tests/safe-render.test.mjs clients/web-overlay/tests/send-state.test.mjs clients/web-overlay/tests/settings-contract.test.mjs clients/web-overlay/tests/settings-store.test.mjs
+
+      - name: Build shared desktop assets
+        env:
+          DANMAKU_SERVER_URL: http://127.0.0.1:3999
+        run: npm run build:desktop --prefix clients/web-overlay
+
+      - name: Test desktop JavaScript and cross-client contracts
+        run: node --test desktop/tests/config.test.mjs desktop/tests/room-contract.test.mjs
+
+      - name: Test Tauri Rust
+        run: cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --version "2.11.4" --locked
+
+      - name: Build unsigned macOS bundles
+        env:
+          DANMAKU_SERVER_URL: https://danmaku.kolvid.app
+        run: npm run tauri:build --prefix clients/web-overlay
+
+      - name: Verify macOS bundles exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          bundleRoot='desktop/src-tauri/target/release/bundle'
+          app_count=0
+          for app in "$bundleRoot"/macos/*.app; do
+            if [[ -d "$app" ]]; then app_count=$((app_count + 1)); fi
+          done
+          dmg_count=0
+          for dmg in "$bundleRoot"/dmg/*.dmg; do
+            if [[ -f "$dmg" ]]; then dmg_count=$((dmg_count + 1)); fi
+          done
+          if [[ "$app_count" -lt 1 ]]; then echo 'Expected at least one macOS .app bundle.'; exit 1; fi
+          if [[ "$dmg_count" -lt 1 ]]; then echo 'Expected at least one macOS .dmg bundle.'; exit 1; fi
+
+      - name: Mark artifacts as unsigned
+        run: |
+          mkdir -p desktop/src-tauri/target/release/bundle
+          printf '%s\n' 'UNSIGNED: no signing identity or notarization credential is used by this workflow.' > desktop/src-tauri/target/release/bundle/UNSIGNED-ARTIFACT.txt
+
+      - name: Upload unsigned macOS bundles
+        uses: actions/upload-artifact@v6
+        with:
+          name: danmaku-overlay-macos-unsigned
+          if-no-files-found: error
+          path: |
+            desktop/src-tauri/target/release/bundle/macos/*.app
+            desktop/src-tauri/target/release/bundle/dmg/*.dmg
+            desktop/src-tauri/target/release/bundle/UNSIGNED-ARTIFACT.txt

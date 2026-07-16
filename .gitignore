@@ -1,0 +1,36 @@
+node_modules/
+*.db
+*.db-shm
+*.db-wal
+
+# Secrets and private keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Runtime and incomplete load-test output
+load-tests/results/
+
+# Generated web bundles
+desktop/frontend/generated/
+extension/dist/
+
+# Android build
+android/.gradle/
+android/build/
+android/app/build/
+local.properties
+
+# Local release packages and verification evidence
+release/
+artifacts/
+releases/
+.task-logs/
+.task-artifacts/
+test-results/
+**/test-results/
+**/playwright-report/

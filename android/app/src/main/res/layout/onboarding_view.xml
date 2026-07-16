@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80000000"
+    android:gravity="center"
+    android:padding="40dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#F214141E"
+        android:padding="30dp"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_title"
+            android:textColor="#E6EDF3"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_instructions"
+            android:textColor="#CCE6EDF3"
+            android:textSize="14sp"
+            android:lineSpacingExtra="8dp"
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/onboarding_ok_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/understood"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:background="#CC58A6FF"
+            android:minHeight="0dp"
+            android:padding="12dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="accessibility_hue_decrease" type="id" />
+    <item name="accessibility_hue_increase" type="id" />
+    <item name="accessibility_saturation_decrease" type="id" />
+    <item name="accessibility_saturation_increase" type="id" />
+    <item name="accessibility_value_decrease" type="id" />
+    <item name="accessibility_value_increase" type="id" />
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F214141E"
+    android:fillViewport="true"
+    android:padding="12dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <LinearLayout android:id="@+id/room_drag_handle" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/room_management_title" android:textColor="#E6EDF3" android:textStyle="bold" />
+            <Button android:id="@+id/room_close_btn" android:layout_width="48dp" android:layout_height="48dp" android:background="@android:color/transparent" android:contentDescription="@string/close_room_management" android:text="@string/close_symbol" android:textColor="#E6EDF3" />
+        </LinearLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/default_room_section" android:textColor="#B2B5BE" android:textStyle="bold" />
+        <Button android:id="@+id/room_default_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/default_room_loading" android:textAllCaps="false" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/joined_rooms_section" android:textColor="#B2B5BE" android:textStyle="bold" />
+        <LinearLayout android:id="@+id/room_joined_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/public_rooms_section" android:textColor="#B2B5BE" android:textStyle="bold" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+            <EditText android:id="@+id/room_public_query" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="@string/public_room_search_hint" android:imeOptions="actionSearch" android:importantForAutofill="no" android:inputType="text" android:maxLength="24" android:textColor="#E6EDF3" android:textColorHint="#8090A0" />
+            <Button android:id="@+id/room_public_search_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/search" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/room_public_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+        <TextView android:id="@+id/room_page_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityLiveRegion="polite" android:gravity="center" android:textColor="#B2B5BE" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+            <Button android:id="@+id/room_prev_btn" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/previous_page" />
+            <Button android:id="@+id/room_next_btn" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/next_page" />
+        </LinearLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/join_room_section" android:textColor="#B2B5BE" android:textStyle="bold" />
+        <EditText android:id="@+id/room_code_input" android:layout_width="match_parent" android:layout_height="wrap_content" android:digits="0123456789" android:hint="@string/room_code_hint" android:imeOptions="actionDone" android:importantForAutofill="no" android:inputType="number" android:maxLength="8" android:textColor="#E6EDF3" android:textColorHint="#8090A0" />
+        <Button android:id="@+id/room_lookup_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/lookup_room" />
+        <TextView android:id="@+id/room_lookup_summary" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E6EDF3" />
+        <EditText android:id="@+id/room_join_password" android:layout_width="match_parent" android:layout_height="wrap_content" android:autofillHints="password" android:hint="@string/password_hint" android:imeOptions="actionDone" android:importantForAutofill="yes" android:inputType="textPassword" android:maxLength="64" android:singleLine="true" android:textColor="#E6EDF3" android:textColorHint="#8090A0" android:visibility="gone" />
+        <Button android:id="@+id/room_join_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/join_room" android:visibility="gone" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/create_room_section" android:textColor="#B2B5BE" android:textStyle="bold" />
+        <EditText android:id="@+id/room_create_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/room_name_hint" android:imeOptions="actionDone" android:importantForAutofill="no" android:inputType="textCapSentences" android:maxLength="24" android:singleLine="true" android:textColor="#E6EDF3" android:textColorHint="#8090A0" />
+        <RadioGroup android:id="@+id/room_visibility_group" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+            <RadioButton android:id="@+id/room_visibility_public" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:text="@string/visibility_public" android:textColor="#E6EDF3" />
+            <RadioButton android:id="@+id/room_visibility_unlisted" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility_unlisted" android:textColor="#E6EDF3" />
+        </RadioGroup>
+        <CheckBox android:id="@+id/room_require_password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/require_password" android:textColor="#E6EDF3" android:visibility="gone" />
+        <EditText android:id="@+id/room_create_password" android:layout_width="match_parent" android:layout_height="wrap_content" android:autofillHints="newPassword" android:hint="@string/password_length_hint" android:imeOptions="actionDone" android:importantForAutofill="yes" android:inputType="textPassword" android:maxLength="64" android:singleLine="true" android:textColor="#E6EDF3" android:textColorHint="#8090A0" android:visibility="gone" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/retention_description" android:textColor="#E6EDF3" android:textStyle="bold" />
+        <Spinner android:id="@+id/room_retention_spinner" android:layout_width="match_parent" android:layout_height="wrap_content" android:contentDescription="@string/retention_description" android:minHeight="48dp" android:popupBackground="#2A2A35" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/retention_cleanup_hint" android:textColor="#B2B5BE" android:textSize="12sp" />
+        <Button android:id="@+id/room_create_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/create_room" />
+
+        <LinearLayout android:id="@+id/room_owner_section" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="vertical" android:visibility="gone">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/owner_management_section" android:textColor="#B2B5BE" android:textStyle="bold" />
+            <EditText android:id="@+id/room_owner_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/new_room_name_hint" android:importantForAutofill="no" android:inputType="textCapSentences" android:maxLength="24" android:textColor="#E6EDF3" />
+            <RadioGroup android:id="@+id/room_owner_visibility_group" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <RadioButton android:id="@+id/room_owner_visibility_public" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility_public" android:textColor="#E6EDF3" />
+                <RadioButton android:id="@+id/room_owner_visibility_unlisted" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility_unlisted" android:textColor="#E6EDF3" />
+            </RadioGroup>
+            <EditText android:id="@+id/room_owner_password" android:layout_width="match_parent" android:layout_height="wrap_content" android:autofillHints="newPassword" android:hint="@string/owner_password_hint" android:importantForAutofill="yes" android:inputType="textPassword" android:maxLength="64" android:textColor="#E6EDF3" />
+            <CheckBox android:id="@+id/room_owner_remove_password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/remove_password" android:textColor="#E6EDF3" />
+            <Button android:id="@+id/room_owner_update_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/update_room_name" />
+            <Button android:id="@+id/room_owner_delete_btn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/close_room" android:textColor="#FF8080" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

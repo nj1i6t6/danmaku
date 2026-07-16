@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://danmaku.kolvid.app/sitemap.xml
