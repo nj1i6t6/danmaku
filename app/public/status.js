@@ -2,7 +2,9 @@
 
 (() => {
   const destinationRules = {
-    githubReleases: (url) => url.hostname === 'github.com' && /^\/[^/]+\/[^/]+\/releases(?:\/|$)/.test(url.pathname),
+    androidDownload: (url) => url.hostname === 'github.com' && /^\/nj1i6t6\/danmaku\/releases\/download\/v[^/]+\/[^/]+\.apk$/.test(url.pathname),
+    windowsDownload: (url) => url.hostname === 'github.com' && /^\/nj1i6t6\/danmaku\/releases\/download\/v[^/]+\/[^/]+\.exe$/.test(url.pathname),
+    macosDownload: (url) => url.hostname === 'github.com' && /^\/nj1i6t6\/danmaku\/releases\/download\/v[^/]+\/[^/]+\.dmg$/.test(url.pathname),
     repository: (url) => url.hostname === 'github.com' && /^\/[^/]+\/[^/]+\/?$/.test(url.pathname),
     chromeStore: (url) => url.hostname === 'chromewebstore.google.com' && url.pathname.startsWith('/detail/'),
     edgeStore: (url) => url.hostname === 'microsoftedge.microsoft.com' && url.pathname.startsWith('/addons/detail/'),
@@ -27,7 +29,9 @@
     if (!configRoot || typeof document.querySelectorAll !== 'function') return;
 
     const links = {
-      githubReleases: getVerifiedUrl(configRoot.dataset.githubReleases, 'githubReleases'),
+      androidDownload: getVerifiedUrl(configRoot.dataset.androidDownload, 'androidDownload'),
+      windowsDownload: getVerifiedUrl(configRoot.dataset.windowsDownload, 'windowsDownload'),
+      macosDownload: getVerifiedUrl(configRoot.dataset.macosDownload, 'macosDownload'),
       chromeStore: getVerifiedUrl(configRoot.dataset.chromeStore, 'chromeStore'),
       edgeStore: getVerifiedUrl(configRoot.dataset.edgeStore, 'edgeStore'),
       repository: getVerifiedUrl(configRoot.dataset.repository, 'repository'),

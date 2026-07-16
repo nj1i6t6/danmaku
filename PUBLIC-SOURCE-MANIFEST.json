@@ -435,8 +435,8 @@
     },
     {
       "path": "app/public/index.html",
-      "size": 12477,
-      "sha256": "de709f87b9db3eaad49d9a39f66b72be006cc754969c77348466d70dde9f3de6"
+      "size": 12799,
+      "sha256": "00f0376550d042c48216c692b1eea950f619c3ec237d70c9237d3dda9d103216"
     },
     {
       "path": "app/public/robots.txt",
@@ -450,8 +450,8 @@
     },
     {
       "path": "app/public/status.js",
-      "size": 2192,
-      "sha256": "5c7c10d68ffa64590e427f03c49626235110d9fe0e955314395bebc31bdd9e79"
+      "size": 2695,
+      "sha256": "66be2984d76806eac2b87c09f9fb10e22e96226b22d634ad6bd153f4a0ae2c4d"
     },
     {
       "path": "app/public/style.css",
@@ -540,8 +540,8 @@
     },
     {
       "path": "app/tests/landing-page.test.js",
-      "size": 11387,
-      "sha256": "cd70b6aee97b90f2021b42f669f69f58f0057d994e19e953a29e10c63acb0b6b"
+      "size": 12327,
+      "sha256": "0c957349dab34c88fa05cb1dee3c89774bdb94f6759283c0bf42fce6bd6ac118"
     },
     {
       "path": "app/tests/load-tools.test.js",
@@ -865,13 +865,13 @@
     },
     {
       "path": "clients/web-overlay/tests/landing-e2e.spec.mjs",
-      "size": 6666,
-      "sha256": "eea4eabb49c92e4092dc23b8c838a34c61a148b984b846a00d8740b99695a802"
+      "size": 7016,
+      "sha256": "10ab42c1fab03fe919b3170c54192953dafae7c9aa767d6b01c1736d10fc7f6c"
     },
     {
       "path": "clients/web-overlay/tests/landing-runtime.spec.mjs",
-      "size": 6830,
-      "sha256": "9ec9ea11039a064c30e01ebaf3fbc0d9245674fbcf7091253b86bdef408583a1"
+      "size": 7072,
+      "sha256": "c43ae988b19a9444d5f0accfbf61156b5ee9955012c6e8180d85ee3c4ffcb322"
     },
     {
       "path": "clients/web-overlay/tests/overlay-controller.test.mjs",

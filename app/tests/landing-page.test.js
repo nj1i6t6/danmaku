@@ -9,7 +9,10 @@ const path = require('node:path');
 const vm = require('node:vm');
 const { createServer } = require('../server');
 
-const GITHUB_RELEASES = 'https://github.com/nj1i6t6/danmaku/releases';
+const RELEASE_ROOT = 'https://github.com/nj1i6t6/danmaku/releases/download/v1.0.3';
+const ANDROID_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay-android-0.1.3.apk`;
+const WINDOWS_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay_0.1.0_x64-setup.exe`;
+const MACOS_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay_0.1.0_aarch64.dmg`;
 const REPOSITORY = 'https://github.com/nj1i6t6/danmaku';
 
 function request(url, { method = 'GET', headers = {}, body, timeoutMs = 2_000 } = {}) {
@@ -123,7 +126,7 @@ test('root is a minimal local-only Overlay landing page with an exact asset allo
     assert.doesNotMatch(response.body, /socket\.io|tradingview|api\/search|symbols\.json|股票搜尋|看盤|<iframe|<object|<embed|manifest\.webmanifest|\/js\//i);
     assert.deepEqual(
       [...response.body.matchAll(/\bhttps?:\/\/[^"'\s<]+/gi)].map((match) => match[0]),
-      [GITHUB_RELEASES, REPOSITORY],
+      [ANDROID_DOWNLOAD, WINDOWS_DOWNLOAD, MACOS_DOWNLOAD, REPOSITORY],
       'only configured GitHub destinations may appear in landing HTML',
     );
     assert.doesNotMatch(response.body, /<script\b(?![^>]*\bsrc=)|\sstyle=/i);
@@ -139,7 +142,10 @@ test('landing exposes five platform entries and keeps unconfigured destinations 
       [...response.body.matchAll(/data-platform="([^"]+)"/g)].map((match) => match[1]),
       ['android', 'windows', 'macos', 'chrome', 'edge'],
     );
-    assert.match(response.body, new RegExp(`data-github-releases="${GITHUB_RELEASES}"`));
+    assert.match(response.body, new RegExp(`data-android-download="${ANDROID_DOWNLOAD.replaceAll('.', '\\.')}"`));
+    assert.match(response.body, new RegExp(`data-windows-download="${WINDOWS_DOWNLOAD.replaceAll('.', '\\.')}"`));
+    assert.match(response.body, new RegExp(`data-macos-download="${MACOS_DOWNLOAD.replaceAll('.', '\\.')}"`));
+    assert.doesNotMatch(response.body, /data-github-releases=/);
     assert.match(response.body, /data-chrome-store=""/);
     assert.match(response.body, /data-edge-store=""/);
     assert.match(response.body, new RegExp(`data-repository="${REPOSITORY}"`));
@@ -156,7 +162,7 @@ test('landing script hydrates local configuration without backend or network req
   await withService(async (url) => {
     const response = await request(`${url}/status.js`);
     const fetchCalls = [];
-    const downloads = { dataset: { githubReleases: '', chromeStore: '', edgeStore: '', repository: '' } };
+    const downloads = { dataset: { androidDownload: '', windowsDownload: '', macosDownload: '', chromeStore: '', edgeStore: '', repository: '' } };
     const context = {
       document: {
         getElementById: (id) => (id === 'downloads' ? downloads : null),
@@ -188,12 +194,16 @@ test('landing link hydration accepts only HTTPS destinations and hardens externa
       querySelector(selector) { return selector === 'button' ? this.control : null; },
       replaceChildren(child) { this.child = child; },
     });
-    const github = makeWrapper('githubReleases');
+    const android = makeWrapper('androidDownload');
+    const windows = makeWrapper('windowsDownload');
+    const macos = makeWrapper('macosDownload');
     const repository = makeWrapper('repository');
     const chrome = makeWrapper('chromeStore');
     const downloads = {
       dataset: {
-        githubReleases: GITHUB_RELEASES,
+        androidDownload: ANDROID_DOWNLOAD,
+        windowsDownload: WINDOWS_DOWNLOAD,
+        macosDownload: MACOS_DOWNLOAD,
         repository: REPOSITORY,
         chromeStore: '',
         edgeStore: '',
@@ -203,17 +213,19 @@ test('landing link hydration accepts only HTTPS destinations and hardens externa
       URL,
       document: {
         getElementById: (id) => (id === 'downloads' ? downloads : null),
-        querySelectorAll: () => [github, repository, chrome],
+        querySelectorAll: () => [android, windows, macos, repository, chrome],
         createElement: () => ({}),
       },
     };
 
     vm.runInNewContext(response.body, context);
-    assert.equal(github.child.href, downloads.dataset.githubReleases);
-    assert.equal(github.child.target, '_blank');
-    assert.equal(github.child.rel, 'noopener noreferrer');
-    assert.equal(github.child.className, 'entry-button');
-    assert.equal(github.child.textContent, 'open githubReleases');
+    assert.equal(android.child.href, ANDROID_DOWNLOAD);
+    assert.equal(windows.child.href, WINDOWS_DOWNLOAD);
+    assert.equal(macos.child.href, MACOS_DOWNLOAD);
+    assert.equal(android.child.target, '_blank');
+    assert.equal(android.child.rel, 'noopener noreferrer');
+    assert.equal(android.child.className, 'entry-button');
+    assert.equal(android.child.textContent, 'open androidDownload');
     assert.equal(repository.child.href, REPOSITORY);
     assert.equal(repository.child.target, '_blank');
     assert.equal(repository.child.rel, 'noopener noreferrer');

@@ -10,7 +10,10 @@ const artifactRoot = path.join(repositoryRoot, '.task-artifacts');
 const indexSource = fs.readFileSync(path.join(publicRoot, 'index.html'), 'utf8');
 const styleSource = fs.readFileSync(path.join(publicRoot, 'style.css'), 'utf8');
 const statusSource = fs.readFileSync(path.join(publicRoot, 'status.js'), 'utf8');
-const githubReleases = 'https://github.com/nj1i6t6/danmaku/releases';
+const releaseRoot = 'https://github.com/nj1i6t6/danmaku/releases/download/v1.0.3';
+const androidDownload = `${releaseRoot}/danmaku-overlay-android-0.1.3.apk`;
+const windowsDownload = `${releaseRoot}/danmaku-overlay_0.1.0_x64-setup.exe`;
+const macosDownload = `${releaseRoot}/danmaku-overlay_0.1.0_aarch64.dmg`;
 const repository = 'https://github.com/nj1i6t6/danmaku';
 const pageSource = indexSource
   .replace(/\s*<link\b[^>]+rel=["'](?:icon|apple-touch-icon|stylesheet)["'][^>]*>/gi, '')
@@ -124,9 +127,9 @@ test('configured platform destinations replace disabled buttons with hardened HT
   await page.addScriptTag({ content: statusSource });
 
   const expected = new Map([
-    ['android', githubReleases],
-    ['windows', githubReleases],
-    ['macos', githubReleases],
+    ['android', androidDownload],
+    ['windows', windowsDownload],
+    ['macos', macosDownload],
   ]);
   for (const [platform, href] of expected) {
     const anchor = page.locator(`[data-platform="${platform}"] a.entry-button`);

@@ -8,7 +8,12 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(here, '..', '..', '..');
 const publicRoot = path.join(repositoryRoot, 'app', 'public');
 const evidenceRoot = path.join(repositoryRoot, 'test-results', 'task9');
-const githubReleases = 'https://github.com/nj1i6t6/danmaku/releases';
+const releaseRoot = 'https://github.com/nj1i6t6/danmaku/releases/download/v1.0.3';
+const directDownloads = {
+  android: `${releaseRoot}/danmaku-overlay-android-0.1.3.apk`,
+  windows: `${releaseRoot}/danmaku-overlay_0.1.0_x64-setup.exe`,
+  macos: `${releaseRoot}/danmaku-overlay_0.1.0_aarch64.dmg`,
+};
 const repository = 'https://github.com/nj1i6t6/danmaku';
 const contentTypes = new Map([
   ['.css', 'text/css; charset=utf-8'],
@@ -120,7 +125,12 @@ test('landing exposes only local static assets and no backend request', async ()
     title: document.title,
     description: document.querySelector('meta[name="description"]')?.content,
     viewport: document.querySelector('meta[name="viewport"]')?.content,
-    githubReleases: document.querySelector('[data-platform="android"] a.entry-button')?.href,
+    downloads: Object.fromEntries(
+      ['android', 'windows', 'macos'].map((platform) => [
+        platform,
+        document.querySelector(`[data-platform="${platform}"] a.entry-button`)?.href,
+      ]),
+    ),
     repository: document.querySelector('.configurable-link a[href]')?.href,
     browserButtonsDisabled: [...document.querySelectorAll('[data-platform="chrome"] button, [data-platform="edge"] button')].every((button) => button.disabled),
   }));
@@ -131,7 +141,7 @@ test('landing exposes only local static assets and no backend request', async ()
   expect(audit.title).toBe('彈幕 Overlay');
   expect(audit.description).toContain('Android');
   expect(audit.viewport).toContain('width=device-width');
-  expect(audit.githubReleases).toBe(githubReleases);
+  expect(audit.downloads).toEqual(directDownloads);
   expect(audit.repository).toBe(repository);
   expect(audit.browserButtonsDisabled).toBe(true);
   await page.close();
