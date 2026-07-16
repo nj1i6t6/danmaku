@@ -8,6 +8,11 @@
       "sha256": "92a89cc572f11aba827e3a2cdbe0dcd6f1575715c7f70bbe5158333e6f74730d"
     },
     {
+      "path": ".gitattributes",
+      "size": 112,
+      "sha256": "acc1df0cecdeb0c58b9becc61162ecfd02ba799a012600191950049d316d7b4c"
+    },
+    {
       "path": ".github/workflows/build-android.yml",
       "size": 7507,
       "sha256": "0a6442547ae06ec47226824763b84c25d35320b7825a51202960385d5281c8d3"
@@ -1145,8 +1150,8 @@
     },
     {
       "path": "scripts/public-tree-policy.mjs",
-      "size": 14517,
-      "sha256": "2be2c2c52a98175a279b53c1d1da3a8c264f2ca33544f9be61aa1cdf3d5b7e2a"
+      "size": 14537,
+      "sha256": "679c0aa1f433785ac3ca391e5b6c7e43289450b8c100611cf00a139fac039eb8"
     },
     {
       "path": "scripts/tests/android-parity.test.mjs",
@@ -1160,8 +1165,8 @@
     },
     {
       "path": "scripts/tests/public-export.test.mjs",
-      "size": 6833,
-      "sha256": "4a3b4a03e017887ca907775a76964cd4f65d895733b343f4a38c53caabd5cfaa"
+      "size": 6851,
+      "sha256": "02bba4e2f2ee72fa6f76f3be6b4e4656391b626c4e136cf3fe30cb1019947be3"
     },
     {
       "path": "scripts/tests/release-candidate.test.mjs",
@@ -1175,8 +1180,8 @@
     },
     {
       "path": "scripts/tests/workflows.test.mjs",
-      "size": 18185,
-      "sha256": "68b5e2e71c8ab25f8942641c66c868db28e0bcf400e4b5fbf4d3833adfc41090"
+      "size": 18435,
+      "sha256": "3770d70114ad51b879bd36f6ff41156ee83f4fb194ce5516b3ce4f23636653bd"
     },
     {
       "path": "scripts/verify-public-tree.mjs",

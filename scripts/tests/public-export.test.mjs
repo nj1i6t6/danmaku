@@ -37,7 +37,7 @@ test('export copies only the explicit public allowlist and creates a determinist
   assert.equal(result.status, 0, result.stderr || result.stdout);
 
   for (const relative of [
-    'README.md', 'LICENSE', '.env.example', '.github/workflows/ci.yml',
+    'README.md', 'LICENSE', '.env.example', '.gitattributes', '.github/workflows/ci.yml',
     'app/server.js', 'android/gradlew', 'desktop/src-tauri/Cargo.lock',
     'clients/web-overlay/src/extension/background.js', 'scripts/verify-public-tree.mjs',
     'clients/web-overlay/src/extension/shared-core-entry.js.fixture',

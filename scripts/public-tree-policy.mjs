@@ -8,6 +8,7 @@ export const PUBLIC_LICENSE_ID = 'LicenseRef-Stock-Danmaku-NC-Network-Copyleft-1
 
 const ROOT_FILES = [
   '.env.example',
+  '.gitattributes',
   '.gitignore',
   'ACCEPTABLE-USE.md',
   'BUILD-NOTES.md',
