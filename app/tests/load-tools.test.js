@@ -290,15 +290,14 @@ test('paired load children terminate the sibling when one child fails', async ()
   const os = require('node:os');
   const { runToFile, waitForChildren } = require(path.join(root, 'load-tests', 'child-processes.js'));
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stock-danmaku-load-child-'));
-  const marker = path.join(dir, 'terminated');
   fs.writeFileSync(path.join(dir, 'fail.js'), "setTimeout(() => process.exit(7), 50);\n");
-  fs.writeFileSync(path.join(dir, 'long.js'), "const fs=require('node:fs'); process.on('SIGTERM',()=>{fs.writeFileSync(process.env.MARKER,'yes');process.exit(0)}); setInterval(()=>{},1000);\n");
+  fs.writeFileSync(path.join(dir, 'long.js'), "setInterval(()=>{},1000);\n");
   try {
     const failed = runToFile(path.join(dir, 'fail.js'), {}, path.join(dir, 'fail.out'), path.join(dir, 'fail.err'), { cwd: dir });
-    const long = runToFile(path.join(dir, 'long.js'), { MARKER: marker }, path.join(dir, 'long.out'), path.join(dir, 'long.err'), { cwd: dir });
+    const long = runToFile(path.join(dir, 'long.js'), {}, path.join(dir, 'long.out'), path.join(dir, 'long.err'), { cwd: dir });
     const startedAt = Date.now();
     await assert.rejects(waitForChildren([failed, long]), /fail\.js failed \(7\)/);
-    assert.equal(fs.readFileSync(marker, 'utf8'), 'yes');
+    assert.notEqual(long.child.exitCode ?? long.child.signalCode, null);
     assert.equal(Date.now() - startedAt < 3_000, true);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });

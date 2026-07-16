@@ -540,8 +540,8 @@
     },
     {
       "path": "app/tests/load-tools.test.js",
-      "size": 15757,
-      "sha256": "68fd088669a807555ee714501d13b0dc8fb427ab5486c7f545c1797c249e486d"
+      "size": 15592,
+      "sha256": "e3ef0273933eaa24aaabc850eea07ff17cf8d6db3d9d7ee3e311ccf49cd77543"
     },
     {
       "path": "app/tests/message.test.js",
