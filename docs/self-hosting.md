@@ -16,7 +16,7 @@
 ### 客戶端
 
 - Shared Web Overlay／Extension：Node.js 20、npm；瀏覽器 E2E 依 package lock 安裝 Playwright。
-- Desktop：Rust 至少 1.77.2、Tauri v2 平台 prerequisite；bundle 必須在目標 Windows／macOS 環境驗證。
+- Desktop：Rust 至少 1.85.0、Tauri v2 平台 prerequisite；bundle 必須在目標 Windows／macOS 環境驗證。
 - Android：JDK 17、Android SDK platform 34／build-tools 34，使用 repository 內 `android/gradlew`。
 
 ## 2. 先跑 source tests

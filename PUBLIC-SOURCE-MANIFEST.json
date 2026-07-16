@@ -20,17 +20,17 @@
     {
       "path": ".github/workflows/build-macos.yml",
       "size": 3986,
-      "sha256": "ab1eea5756cf983e5a54a4e82210102408f9d92fe2ec9ab95f1c947895404eca"
+      "sha256": "89391f7fa215b67157ae682b076dfee9a8f771f21b4153f4c5bbebab71ade48b"
     },
     {
       "path": ".github/workflows/build-windows.yml",
       "size": 4591,
-      "sha256": "9a251b42fe125379593d24439936aed25fa906c5f50b2e5cca855b024d18dca5"
+      "sha256": "9eb9ed1d82b69e115dd1909c2da0c9c907915608d33947430f375e8a0fc32e95"
     },
     {
       "path": ".github/workflows/ci.yml",
-      "size": 3974,
-      "sha256": "03a4723550d9d4b61fd5070bd5682fa24dab288814d6a1b135e5cc1f54ae2d12"
+      "size": 3993,
+      "sha256": "103583cbe93fefe2181dfabfc2f78a32aba761f18c1acb1cca1b7cf8116f4807"
     },
     {
       "path": ".gitignore",
@@ -45,7 +45,7 @@
     {
       "path": "BUILD-NOTES.md",
       "size": 3201,
-      "sha256": "ea4668457ee27b549a19765da5ff3a40735a0c0b7516235dd329f913a24783ef"
+      "sha256": "1a77402954df7d8956d290f4c35ac06eae3d646ffef185d65b3c7c6183ff627f"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -70,7 +70,7 @@
     {
       "path": "README.md",
       "size": 8085,
-      "sha256": "6f3eb36082ccc72c08c45b8ea5d9414f49a2ec8416b408506eaad6fb81fb8796"
+      "sha256": "398ad3c89cc03145eca9c21d6b43f8f1f3e5a675ec4173f56d0ef0494e80a23d"
     },
     {
       "path": "SECURITY.md",
@@ -951,7 +951,7 @@
     {
       "path": "desktop/src-tauri/Cargo.toml",
       "size": 990,
-      "sha256": "9bf6c101fc8ad5e728477d069dbec2d41d8bb975c589567350c52fd325e4aace"
+      "sha256": "90ec3313d943f0f0585449ed781f35758e03b7a582c05e0760bd893f73bbc38d"
     },
     {
       "path": "desktop/src-tauri/build.rs",
@@ -1081,7 +1081,7 @@
     {
       "path": "docs/self-hosting.md",
       "size": 13983,
-      "sha256": "67a89688ceab39c22c5ca80ea738b5e6d1728891ea87468a090fcfaa4105bb24"
+      "sha256": "c497737565950ee477c37b1f4b568324b0cbae3e71af7cabfc85b23cc8e46742"
     },
     {
       "path": "load-tests/child-processes.js",
@@ -1145,8 +1145,8 @@
     },
     {
       "path": "scripts/public-tree-policy.mjs",
-      "size": 14479,
-      "sha256": "911e62685eb5d570678dcd2dc239e559d6487ac9340468aa98800443f83eba74"
+      "size": 14517,
+      "sha256": "2be2c2c52a98175a279b53c1d1da3a8c264f2ca33544f9be61aa1cdf3d5b7e2a"
     },
     {
       "path": "scripts/tests/android-parity.test.mjs",
@@ -1160,8 +1160,8 @@
     },
     {
       "path": "scripts/tests/public-export.test.mjs",
-      "size": 5821,
-      "sha256": "156702bdb84f285cb8b67074baa6471d8dae696593c0fbfbb29f97665854d387"
+      "size": 6833,
+      "sha256": "4a3b4a03e017887ca907775a76964cd4f65d895733b343f4a38c53caabd5cfaa"
     },
     {
       "path": "scripts/tests/release-candidate.test.mjs",
@@ -1175,13 +1175,13 @@
     },
     {
       "path": "scripts/tests/workflows.test.mjs",
-      "size": 17527,
-      "sha256": "fdc8ec4e6d73093d099f63360b3324a1088ffa75d1710bb0b6b877840a34fdd3"
+      "size": 17987,
+      "sha256": "ef8f47e31ba507228d1beec3c9b2da8ce53fe4fb8784c008531f942835630e64"
     },
     {
       "path": "scripts/verify-public-tree.mjs",
-      "size": 632,
-      "sha256": "90b486ed54688e0a219b44edb7ffc6226a9d2baddf9462777bc2c8c521a289c1"
+      "size": 722,
+      "sha256": "e38ef4e261661e7219a273bb9a71680ca2b337bf75cbd689d2e6b6447b3e60ba"
     },
     {
       "path": "scripts/verify-release-candidate.mjs",

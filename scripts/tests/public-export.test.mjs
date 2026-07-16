@@ -61,8 +61,28 @@ test('export copies only the explicit public allowlist and creates a determinist
   assert.equal(manifest.files.some((entry) => /generatedAt|sourcePath|workspace|task-logs/i.test(JSON.stringify(entry))), false);
   assert.equal((await stat(path.join(output, 'android/gradlew'))).mode & 0o111, 0o111);
 
-  const verify = run(path.join(output, 'scripts/verify-public-tree.mjs'), ['--source', output], output);
-  assert.equal(verify.status, 0, verify.stderr || verify.stdout);
+  const strictVerify = run(
+    path.join(output, 'scripts/verify-public-tree.mjs'),
+    ['--source', output, '--require-manifest'],
+    output,
+  );
+  assert.equal(strictVerify.status, 0, strictVerify.stderr || strictVerify.stdout);
+
+  const installedTool = path.join(output, 'app', 'node_modules', '.bin', 'runtime-tool');
+  await mkdir(path.dirname(installedTool), { recursive: true });
+  await symlink('/usr/bin/env', installedTool);
+  const generatedRuntime = path.join(output, 'desktop', 'frontend', 'generated', 'runtime.js');
+  await mkdir(path.dirname(generatedRuntime), { recursive: true });
+  await writeFile(generatedRuntime, 'generated runtime fixture');
+
+  const sourceVerify = run(path.join(output, 'scripts/verify-public-tree.mjs'), ['--source', output], output);
+  assert.equal(sourceVerify.status, 0, sourceVerify.stderr || sourceVerify.stdout);
+  const strictAfterRuntime = run(
+    path.join(output, 'scripts/verify-public-tree.mjs'),
+    ['--source', output, '--require-manifest'],
+    output,
+  );
+  assert.notEqual(strictAfterRuntime.status, 0, 'strict manifest verification unexpectedly ignored runtime files');
 });
 
 test('export refuses a non-empty target and never overwrites existing data', async (t) => {
@@ -97,7 +117,11 @@ test('verifier rejects symlinks, credential URLs, private keys, release binaries
     const copied = spawnSync('cp', ['-a', `${baseline}/.`, candidate], { encoding: 'utf8' });
     assert.equal(copied.status, 0, copied.stderr);
     await mutate(candidate);
-    const result = run(path.join(candidate, 'scripts/verify-public-tree.mjs'), ['--source', candidate], candidate);
+    const result = run(
+      path.join(candidate, 'scripts/verify-public-tree.mjs'),
+      ['--source', candidate, '--require-manifest'],
+      candidate,
+    );
     assert.notEqual(result.status, 0, `${name} unexpectedly passed`);
   }
 });

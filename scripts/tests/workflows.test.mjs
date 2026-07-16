@@ -58,6 +58,15 @@ test('required CI and native/package workflows contain their verification gates'
   }
 });
 
+test('Tauri manifest and hosted workflows use the minimum Edition 2024 capable Rust toolchain', async () => {
+  const cargo = await read('desktop/src-tauri/Cargo.toml');
+  assert.match(cargo, /^rust-version = "1\.85\.0"$/m);
+  for (const name of ['ci.yml', 'build-windows.yml', 'build-macos.yml']) {
+    const source = await read(`.github/workflows/${name}`);
+    assert.match(source, /toolchain:\s*['"]1\.85\.0['"]/, `${name} must use Rust 1.85.0`);
+  }
+});
+
 test('workflows are verification-only, least-privilege, and use GitHub-hosted runners', async () => {
   const names = (await readdir(new URL('.github/workflows/', ROOT))).filter((name) => /\.ya?ml$/.test(name));
   assert.deepEqual(names.sort(), Object.keys(required).sort());

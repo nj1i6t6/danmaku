@@ -259,7 +259,7 @@ export async function verifyPublicTree(root, { requireManifest = false } = {}) {
   if (requireManifest && !hasManifest) errors.push(`${PUBLIC_MANIFEST_NAME}: required for exported tree`);
 
   let files;
-  if (hasManifest) {
+  if (hasManifest && requireManifest) {
     let manifest;
     try {
       manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
@@ -309,5 +309,5 @@ export async function verifyPublicTree(root, { requireManifest = false } = {}) {
     error.findings = errors;
     throw error;
   }
-  return { files: files.length, manifest: hasManifest };
+  return { files: files.length, manifest: hasManifest && requireManifest };
 }
