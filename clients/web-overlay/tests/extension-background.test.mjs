@@ -10,16 +10,21 @@ class EventHook {
   dispatch(...args) { for (const listener of [...this.listeners]) listener(...args); }
 }
 
-function createFakeChrome({ failCredentialWrites = false } = {}) {
+function createFakeChrome({ failCredentialWrites = false, privacyConsent = true } = {}) {
   const runtimeMessages = new EventHook();
   const installed = new EventHook();
   const values = {};
+  if (privacyConsent !== undefined) {
+    values['danmaku.extension.state.v1'] = { privacyConsent };
+  }
   const sent = [];
+  const openedOptions = [];
   const chromeApi = {
     runtime: {
       onMessage: runtimeMessages,
       onInstalled: installed,
       lastError: null,
+      async openOptionsPage() { openedOptions.push(true); },
     },
     storage: {
       local: {
@@ -49,7 +54,7 @@ function createFakeChrome({ failCredentialWrites = false } = {}) {
       assert.equal(keepAlive, true);
     });
   }
-  return { chromeApi, runtimeMessages, values, sent, request };
+  return { chromeApi, runtimeMessages, installed, values, sent, openedOptions, request };
 }
 
 class FakeSocket {
@@ -113,6 +118,21 @@ async function registerTabs(fake, count, visibilityState = 'visible') {
   return replies;
 }
 
+test('first installation opens the privacy consent interface while updates stay quiet', async () => {
+  const fake = createFakeChrome({ privacyConsent: false });
+  const harness = createSocketHarness();
+  const controller = await installExtensionBackground({
+    chromeApi: fake.chromeApi, createSocket: harness.createSocket, serverUrl: 'http://127.0.0.1:3999',
+  });
+
+  fake.installed.dispatch({ reason: 'update' });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(fake.openedOptions.length, 0);
+  fake.installed.dispatch({ reason: 'install' });
+  await waitFor(() => fake.openedOptions.length === 1, 'privacy options opening');
+  await controller.stop();
+});
+
 test('twenty top-level tabs share exactly one socket with stable extension authentication', async () => {
   const fake = createFakeChrome();
   const harness = createSocketHarness();
@@ -128,6 +148,64 @@ test('twenty top-level tabs share exactly one socket with stable extension authe
   assert.deepEqual(options.transports, ['websocket']);
   assert.ok(options.reconnectionDelayMax <= 10_000);
   assert.equal(new Set((await registerTabs(fake, 2)).map((reply) => reply.state.clientId)).size, 1);
+  await controller.stop();
+});
+
+test('first launch requires explicit privacy consent before client identity or socket creation', async () => {
+  const fake = createFakeChrome({ privacyConsent: false });
+  const harness = createSocketHarness();
+  const controller = await installExtensionBackground({
+    chromeApi: fake.chromeApi, createSocket: harness.createSocket, serverUrl: 'http://127.0.0.1:3999',
+  });
+
+  assert.equal(harness.sockets.length, 0);
+  const before = await fake.request({ action: 'state/get', payload: {} });
+  assert.equal(before.ok, true);
+  assert.equal(before.state.privacyConsent, false);
+  assert.equal(before.state.connection.status, 'consent-required');
+  assert.equal(Object.hasOwn(before.state, 'clientId'), false);
+  assert.equal(Object.hasOwn(fake.values['danmaku.extension.state.v1'], 'clientId'), false);
+
+  const roomList = await fake.request({ action: 'room/list', payload: { page: 1 } });
+  assert.equal(roomList.ok, false);
+  assert.equal(roomList.error.code, 'CONSENT_REQUIRED');
+  assert.equal(harness.sockets.length, 0);
+
+  const consent = await fake.request({ action: 'privacy/consent', payload: {} });
+  assert.equal(consent.ok, true);
+  assert.equal(consent.state.privacyConsent, true);
+  assert.equal(harness.sockets.length, 1);
+  assert.match(consent.state.clientId, /^[A-Za-z0-9._:-]+$/);
+  assert.equal(fake.values['danmaku.extension.state.v1'].privacyConsent, true);
+  await controller.stop();
+});
+
+test('withdrawing privacy consent disconnects immediately and blocks networking until renewed consent', async () => {
+  const fake = createFakeChrome();
+  const harness = createSocketHarness();
+  const controller = await installExtensionBackground({
+    chromeApi: fake.chromeApi, createSocket: harness.createSocket, serverUrl: 'http://127.0.0.1:3999',
+  });
+  const firstClientId = (await fake.request({ action: 'state/get', payload: {} })).state.clientId;
+  assert.equal(harness.sockets.length, 1);
+
+  const revoked = await fake.request({ action: 'privacy/revoke', payload: {} });
+  assert.equal(revoked.ok, true);
+  assert.equal(revoked.state.privacyConsent, false);
+  assert.equal(revoked.state.connection.status, 'consent-required');
+  assert.equal(Object.hasOwn(revoked.state, 'clientId'), false);
+  assert.equal(harness.sockets[0].disconnectCalls, 1);
+  assert.equal(fake.values['danmaku.extension.state.v1'].privacyConsent, false);
+  assert.equal(Object.hasOwn(fake.values['danmaku.extension.state.v1'], 'clientId'), false);
+
+  const blocked = await fake.request({ action: 'room/list', payload: { page: 1 } });
+  assert.equal(blocked.error.code, 'CONSENT_REQUIRED');
+  assert.equal(harness.sockets.length, 1);
+
+  const renewed = await fake.request({ action: 'privacy/consent', payload: {} });
+  assert.equal(renewed.ok, true);
+  assert.equal(harness.sockets.length, 2);
+  assert.notEqual(renewed.state.clientId, firstClientId);
   await controller.stop();
 });
 

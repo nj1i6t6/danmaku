@@ -9,6 +9,10 @@ const status = document.getElementById('status');
 const details = document.getElementById('details');
 const toggle = document.getElementById('toggle-overlay');
 const openOptions = document.getElementById('open-options');
+const privacyConsent = document.getElementById('privacy-consent');
+const appControls = document.getElementById('app-controls');
+const consentAccept = document.getElementById('consent-accept');
+const consentDecline = document.getElementById('consent-decline');
 let activeTabId = null;
 
 function setStatus(kind, title, message) {
@@ -17,7 +21,29 @@ function setStatus(kind, title, message) {
   details.textContent = message;
 }
 
+function showConsentRequired() {
+  privacyConsent.hidden = false;
+  appControls.hidden = true;
+  document.body.dataset.state = 'consent';
+  status.textContent = '需要隱私同意';
+}
+
 async function refresh() {
+  const stateResponse = await send('state/get', {});
+  if (!stateResponse.ok) {
+    privacyConsent.hidden = true;
+    appControls.hidden = false;
+    setStatus('unavailable', '背景服務暫時無法使用', stateResponse.error?.message || '請稍後再試。');
+    toggle.disabled = true;
+    return;
+  }
+  if (stateResponse.state?.privacyConsent !== true) {
+    showConsentRequired();
+    return;
+  }
+
+  privacyConsent.hidden = true;
+  appControls.hidden = false;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   activeTabId = tab?.id || null;
   if (!activeTabId) { setStatus('unavailable', '找不到目前分頁', '請切換到一般網頁後再試。'); toggle.disabled = true; return; }
@@ -43,6 +69,16 @@ toggle.addEventListener('click', async () => {
   const response = await send('overlay/toggle', { tabId: activeTabId });
   if (!response.ok) setStatus('unavailable', '無法控制此頁面', response.error?.message || '請重新整理頁面。');
   else window.close();
+});
+consentAccept.addEventListener('click', async () => {
+  const response = await send('privacy/consent', {});
+  if (!response.ok) { status.textContent = response.error?.message || '無法儲存同意狀態'; return; }
+  await refresh();
+});
+consentDecline.addEventListener('click', async () => {
+  await send('privacy/revoke', {});
+  showConsentRequired();
+  status.textContent = '尚未同意，不會建立網路連線';
 });
 openOptions.addEventListener('click', () => chrome.runtime.openOptionsPage());
 refresh();

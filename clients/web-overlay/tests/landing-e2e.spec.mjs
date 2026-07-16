@@ -13,6 +13,8 @@ const directDownloads = {
   android: `${releaseRoot}/danmaku-overlay-android-0.1.3.apk`,
   windows: `${releaseRoot}/danmaku-overlay_0.1.0_x64-setup.exe`,
   macos: `${releaseRoot}/danmaku-overlay_0.1.0_aarch64.dmg`,
+  chrome: `${releaseRoot}/danmaku-overlay-extension-1.0.0.zip`,
+  edge: `${releaseRoot}/danmaku-overlay-extension-1.0.0.zip`,
 };
 const repository = 'https://github.com/nj1i6t6/danmaku';
 const contentTypes = new Map([
@@ -99,7 +101,7 @@ for (const width of [320, 768, 1024, 1440]) {
     expect(layout.mainRight).toBeLessThanOrEqual(width + 1);
     expect(layout.language).toBe('zh-Hant-TW');
     expect(layout.headings[0]).toBe('H1');
-    expect(layout.interactive).toBe(16);
+    expect(layout.interactive).toBe(18);
 
     await page.keyboard.press('Tab');
     expect(await page.evaluate(() => document.activeElement?.classList.contains('skip-link'))).toBe(true);
@@ -126,13 +128,18 @@ test('landing exposes only local static assets and no backend request', async ()
     description: document.querySelector('meta[name="description"]')?.content,
     viewport: document.querySelector('meta[name="viewport"]')?.content,
     downloads: Object.fromEntries(
-      ['android', 'windows', 'macos'].map((platform) => [
+      ['android', 'windows', 'macos', 'chrome', 'edge'].map((platform) => [
         platform,
         document.querySelector(`[data-platform="${platform}"] a.entry-button`)?.href,
       ]),
     ),
     repository: document.querySelector('.configurable-link a[href]')?.href,
-    browserButtonsDisabled: [...document.querySelectorAll('[data-platform="chrome"] button, [data-platform="edge"] button')].every((button) => button.disabled),
+    downloadStates: [...document.querySelectorAll('[data-platform] a.entry-button')].map((anchor) => ({
+      platform: anchor.closest('[data-platform]')?.dataset.platform,
+      cursor: getComputedStyle(anchor).cursor,
+      pointerEvents: getComputedStyle(anchor).pointerEvents,
+      pending: anchor.classList.contains('is-pending'),
+    })),
   }));
   expect(audit.scripts).toEqual([`${origin}/status.js`]);
   expect(audit.styles).toEqual([`${origin}/style.css`]);
@@ -143,6 +150,11 @@ test('landing exposes only local static assets and no backend request', async ()
   expect(audit.viewport).toContain('width=device-width');
   expect(audit.downloads).toEqual(directDownloads);
   expect(audit.repository).toBe(repository);
-  expect(audit.browserButtonsDisabled).toBe(true);
+  expect(audit.downloadStates).toEqual(Object.keys(directDownloads).map((platform) => ({
+    platform,
+    cursor: 'pointer',
+    pointerEvents: 'auto',
+    pending: false,
+  })));
   await page.close();
 });

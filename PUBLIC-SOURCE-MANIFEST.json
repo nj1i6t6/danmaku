@@ -69,8 +69,8 @@
     },
     {
       "path": "PRIVACY.md",
-      "size": 6073,
-      "sha256": "f523befd291c8b167891806ca69aad9a5dcb5500ab3990e1e4d2c2e539e84402"
+      "size": 6350,
+      "sha256": "d4e53f6d544588f553a233c8d21e2b5ea0e8486fdf5454e02e2b9fa829ac65e4"
     },
     {
       "path": "README.md",
@@ -435,8 +435,8 @@
     },
     {
       "path": "app/public/index.html",
-      "size": 12799,
-      "sha256": "00f0376550d042c48216c692b1eea950f619c3ec237d70c9237d3dda9d103216"
+      "size": 12965,
+      "sha256": "2dbd39e96f8e8d2e49ebf1bbb172d84d4cf76c096b9e95e0f5102cfd77f569ad"
     },
     {
       "path": "app/public/robots.txt",
@@ -450,8 +450,8 @@
     },
     {
       "path": "app/public/status.js",
-      "size": 2695,
-      "sha256": "66be2984d76806eac2b87c09f9fb10e22e96226b22d634ad6bd153f4a0ae2c4d"
+      "size": 2943,
+      "sha256": "add57d91d137927ba660c4f57de12bc18d9b8ff74211635031b7146ec57e4468"
     },
     {
       "path": "app/public/style.css",
@@ -710,8 +710,8 @@
     },
     {
       "path": "clients/web-overlay/src/extension/background.js",
-      "size": 20768,
-      "sha256": "5c66c2be5e98e7644c1ea61d76b40e09e1d1d22a7861fc84ba78f55184497029"
+      "size": 22729,
+      "sha256": "71693a9a0f96dac97db3c333013190bf88619c32b3fddca6d683094e54d67465"
     },
     {
       "path": "clients/web-overlay/src/extension/content.js",
@@ -745,43 +745,43 @@
     },
     {
       "path": "clients/web-overlay/src/extension/message-schema.js",
-      "size": 11682,
-      "sha256": "2a7a335f6051c882e8b7b7eb49b49a905e4a4f66b7a7fabaddce99d4888279bf"
+      "size": 11751,
+      "sha256": "8ddf83f3baf31183ce9825dae3786cfff82e03501480c2cf7312f7cedb73716a"
     },
     {
       "path": "clients/web-overlay/src/extension/options.css",
-      "size": 864,
-      "sha256": "b78f056906d87b4751287d7e7964795885e157e33504e38b8f2ec0177c0a6ac2"
+      "size": 1098,
+      "sha256": "d3d601e40821661d0303dabaffff577140685ac8eab4f87e7201b4e3cef59d91"
     },
     {
       "path": "clients/web-overlay/src/extension/options.html",
-      "size": 1301,
-      "sha256": "d1a3f08a381a72044a36b22357b60657d96b37d7015cfde8f63ed943232a4f92"
+      "size": 2307,
+      "sha256": "3d06f257f68d41b28d71e495269f24c91bbac28e8c8751b40f29b906b6df34b7"
     },
     {
       "path": "clients/web-overlay/src/extension/options.js",
-      "size": 1869,
-      "sha256": "e195ec908646c84e961fd1bb5dfe9a7dc8c7d0b88ebbfa01aa16d7fa3a3102c9"
+      "size": 3171,
+      "sha256": "9230e9fd4dd99876ec3d14ba842d2f2c245253de4426ab221314eaf5798f0608"
     },
     {
       "path": "clients/web-overlay/src/extension/popup.css",
-      "size": 866,
-      "sha256": "1cf8ad2d8ab6991983c60686b0792303082167f11e2fd25e7f5cc7c2eec2511f"
+      "size": 1023,
+      "sha256": "f248c726996477c9598816250c585ba42247afe1aa8d73a76424d993bcdad22c"
     },
     {
       "path": "clients/web-overlay/src/extension/popup.html",
-      "size": 742,
-      "sha256": "b001f824b524eaf8cf3be7a17d4bb38f9486cf8fa52aa95d52ab8b357447b237"
+      "size": 1564,
+      "sha256": "902da96beee54253e7b54f79259269e0306c21278581ba97ee8e75e654687723"
     },
     {
       "path": "clients/web-overlay/src/extension/popup.js",
-      "size": 2715,
-      "sha256": "89ce979267f0316581415372f6a41f2025a366e669996e1bd53a181dfc5e9b46"
+      "size": 4054,
+      "sha256": "c93adfac87a4b3ede63ae6b82cdea0a01bafed147f89b68081d66181d58b7cd8"
     },
     {
       "path": "clients/web-overlay/src/extension/storage.js",
-      "size": 4935,
-      "sha256": "dce74c39046520cd83c53dd1f34c6cef17b7fb74f877844ddea5763881e7b9d7"
+      "size": 4987,
+      "sha256": "fc22c952256a3cb8c6b98405588c2cdbdaccaa7013d128784a57df074dc15112"
     },
     {
       "path": "clients/web-overlay/tests/build.test.mjs",
@@ -835,8 +835,8 @@
     },
     {
       "path": "clients/web-overlay/tests/extension-background.test.mjs",
-      "size": 15366,
-      "sha256": "1e9691df5cfaf2b6ecadb6621f1d4e60c424b75d394838312064add47b2695ea"
+      "size": 19179,
+      "sha256": "65289e06d4926cea051f42ef0fe18c8d080688d2ecf34a9afb4fed143e0bb202"
     },
     {
       "path": "clients/web-overlay/tests/extension-e2e.spec.mjs",
@@ -849,14 +849,19 @@
       "sha256": "add0e4c1cc6e5abcfc8988a39ff50dfca087e2098b9ca5ed2ad6d7ef1bdb2cc2"
     },
     {
+      "path": "clients/web-overlay/tests/extension-privacy-ui.test.mjs",
+      "size": 2137,
+      "sha256": "16baaa850f48bd28f08be4a884e66069df4b7081e7dcfc5599bd969cd613ab1c"
+    },
+    {
       "path": "clients/web-overlay/tests/extension-storage.test.mjs",
       "size": 2699,
       "sha256": "cfbddac4af6057f41b548086d632d0e2b903490a65000fff9de790167eb0e78e"
     },
     {
       "path": "clients/web-overlay/tests/extension-unpacked-e2e.spec.mjs",
-      "size": 21612,
-      "sha256": "010ce870d54b4d175ee5ab83fd2e493a08dc32b078df68a729e923e7998fd44c"
+      "size": 22526,
+      "sha256": "604127a791537c1cb70684c20363fa4fc7655969c3c9b54718a39717dfad6282"
     },
     {
       "path": "clients/web-overlay/tests/hsv-color-picker.test.mjs",
@@ -865,13 +870,13 @@
     },
     {
       "path": "clients/web-overlay/tests/landing-e2e.spec.mjs",
-      "size": 7016,
-      "sha256": "10ab42c1fab03fe919b3170c54192953dafae7c9aa767d6b01c1736d10fc7f6c"
+      "size": 7475,
+      "sha256": "e1c5fac742cdf5473045e48e653369d71883e8c744195ed9aef0e3afbff963bf"
     },
     {
       "path": "clients/web-overlay/tests/landing-runtime.spec.mjs",
-      "size": 7072,
-      "sha256": "c43ae988b19a9444d5f0accfbf61156b5ee9955012c6e8180d85ee3c4ffcb322"
+      "size": 7181,
+      "sha256": "48bedf0ab0fc0201646ed986882b5cef8a63caab07d1a77d71cde597cb6c35f5"
     },
     {
       "path": "clients/web-overlay/tests/overlay-controller.test.mjs",

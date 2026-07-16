@@ -308,6 +308,21 @@ test('real unpacked MV3 passes multi-origin lifecycle, owner, visibility, and si
       page.on('request', (request) => pageRequests.push(request.url()));
     };
 
+    expect(socketFixture.metrics.totalConnections).toBe(0);
+    let consentPage = context.pages().find((page) => page.url() === `chrome-extension://${extensionId}/options.html`);
+    if (!consentPage) {
+      consentPage = await context.newPage();
+      await consentPage.goto(`chrome-extension://${extensionId}/options.html`, { waitUntil: 'domcontentloaded' });
+    }
+    attachEvidence(consentPage);
+    await expect(consentPage.locator('#privacy-consent')).toContainText('隨機裝置識別碼');
+    await expect(consentPage.locator('#consent-status')).toContainText('不會建立 Socket 連線');
+    expect(socketFixture.metrics.totalConnections).toBe(0);
+    await consentPage.locator('#consent-accept').click();
+    await expect(consentPage.locator('#consent-status')).toContainText('已同意');
+    await expect.poll(() => socketFixture.metrics.totalConnections).toBe(1);
+    await consentPage.close();
+
     for (const initialPage of context.pages()) await initialPage.close();
 
     const pageA = await context.newPage();

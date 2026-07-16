@@ -120,6 +120,8 @@ function normalizeSettingsPatch(payload) {
 
 const validators = {
   'state/get': emptyPayload,
+  'privacy/consent': emptyPayload,
+  'privacy/revoke': emptyPayload,
   'overlay/register'(payload) {
     const value = exactKeys(payload, ['instanceId', 'visibilityState'], 'overlay/register payload');
     if (typeof value.instanceId !== 'string' || !INSTANCE_ID.test(value.instanceId)) throw new TypeError('instanceId is invalid');

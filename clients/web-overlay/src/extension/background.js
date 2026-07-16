@@ -82,11 +82,12 @@ export function createExtensionBackground({
   let readyReject;
   const ready = new Promise((resolve, reject) => { readyResolve = resolve; readyReject = reject; });
   let state = {
+    privacyConsent: false,
     settings: normalizeSettings(),
     joinedRoomCodes: [],
     history: [],
     overlayEnabled: true,
-    connection: { status: 'connecting' },
+    connection: { status: 'consent-required' },
     currentRoom: null,
     currentRoomCode: null,
     canManageRoom: false,
@@ -94,8 +95,9 @@ export function createExtensionBackground({
 
   function durableState() {
     return {
+      privacyConsent: state.privacyConsent === true,
       settings: state.settings,
-      clientId: state.clientId,
+      ...(state.clientId ? { clientId: state.clientId } : {}),
       ...(state.currentRoomCode ? { currentRoomCode: state.currentRoomCode } : {}),
       ...(state.currentRoom ? { currentRoom: state.currentRoom } : {}),
       joinedRoomCodes: state.joinedRoomCodes,
@@ -109,16 +111,26 @@ export function createExtensionBackground({
   }
 
   function publicState() {
+    const consented = state.privacyConsent === true;
     return sanitizePublic({
-      clientId: state.clientId,
+      privacyConsent: consented,
       settings: state.settings,
-      currentRoom: state.currentRoom,
-      currentRoomCode: state.currentRoomCode,
-      joinedRoomCodes: state.joinedRoomCodes,
-      history: state.history,
       overlayEnabled: state.overlayEnabled,
       connection: state.connection,
-      canManageRoom: state.canManageRoom,
+      ...(consented ? {
+        ...(state.clientId ? { clientId: state.clientId } : {}),
+        currentRoom: state.currentRoom,
+        currentRoomCode: state.currentRoomCode,
+        joinedRoomCodes: state.joinedRoomCodes,
+        history: state.history,
+        canManageRoom: state.canManageRoom,
+      } : {
+        currentRoom: null,
+        currentRoomCode: null,
+        joinedRoomCodes: [],
+        history: [],
+        canManageRoom: false,
+      }),
     });
   }
 
@@ -172,6 +184,7 @@ export function createExtensionBackground({
   }
 
   function emitAck(event, payload, { scope = event, apply } = {}) {
+    if (!state.privacyConsent) return Promise.resolve(typedError('CONSENT_REQUIRED', 'privacy', '請先閱讀隱私說明並同意後再開始使用'));
     if (!socket?.connected) return Promise.resolve(typedError('NOT_CONNECTED', 'connection', '尚未連線'));
     const generation = nextGeneration(scope);
     return new Promise((resolve) => {
@@ -282,22 +295,13 @@ export function createExtensionBackground({
     });
   }
 
-  async function initialize() {
-    await storage.initialize();
-    const stored = await storage.loadState();
-    state = {
-      ...state,
-      ...stored,
-      currentRoom: stored.currentRoom || null,
-      currentRoomCode: stored.currentRoomCode || stored.currentRoom?.roomCode || null,
-      history: normalizeHistory(stored.history),
-      connection: { status: 'connecting' },
-      canManageRoom: stored.currentRoomCode ? await storage.hasOwnerCredential(stored.currentRoomCode) : false,
-    };
+  async function connectWithConsent() {
+    if (!state.privacyConsent || socket) return false;
     if (!state.clientId) {
       state.clientId = uuid();
       await persist();
     }
+    state.connection = { status: 'connecting' };
     socket = createSocket(serverUrl, {
       auth: { platform: 'extension', clientId: state.clientId },
       query: { clientId: state.clientId },
@@ -310,10 +314,46 @@ export function createExtensionBackground({
       timeout: 10_000,
     });
     attachSocketHandlers();
+    return true;
+  }
+
+  async function initialize() {
+    await storage.initialize();
+    const stored = await storage.loadState();
+    state = {
+      ...state,
+      ...stored,
+      currentRoom: stored.currentRoom || null,
+      currentRoomCode: stored.currentRoomCode || stored.currentRoom?.roomCode || null,
+      history: normalizeHistory(stored.history),
+      connection: stored.privacyConsent === true ? { status: 'connecting' } : { status: 'consent-required' },
+      canManageRoom: stored.currentRoomCode ? await storage.hasOwnerCredential(stored.currentRoomCode) : false,
+    };
+    if (state.privacyConsent) await connectWithConsent();
   }
 
   async function command(action, payload, sender) {
     if (action === 'state/get') return { ok: true, state: publicState() };
+    if (action === 'privacy/consent') {
+      state.privacyConsent = true;
+      state.connection = { status: 'connecting' };
+      await persist();
+      await connectWithConsent();
+      await broadcastState();
+      return { ok: true, state: publicState() };
+    }
+    if (action === 'privacy/revoke') {
+      const activeSocket = socket;
+      socket = null;
+      try { activeSocket?.off?.(); } catch { /* no-op */ }
+      try { activeSocket?.disconnect?.(); } catch { /* no-op */ }
+      state.privacyConsent = false;
+      delete state.clientId;
+      state.connection = { status: 'consent-required' };
+      await persist();
+      await broadcastState();
+      return { ok: true, state: publicState() };
+    }
     if (action === 'overlay/register') {
       if (sender?.frameId !== undefined && sender.frameId !== 0) return typedError('TOP_FRAME_REQUIRED', 'page', 'Overlay 只在最上層頁面執行');
       const tabId = sender?.tab?.id;
@@ -493,11 +533,17 @@ export function createExtensionBackground({
     return true;
   };
 
+  const installedListener = (details) => {
+    if (details?.reason !== 'install' || typeof chromeApi.runtime.openOptionsPage !== 'function') return;
+    Promise.resolve(chromeApi.runtime.openOptionsPage()).catch(() => {});
+  };
+
   function start() {
     if (started) return ready;
     if (stopped) return Promise.reject(new Error('background controller has stopped'));
     started = true;
     chromeApi.runtime.onMessage.addListener(messageListener);
+    chromeApi.runtime.onInstalled?.addListener?.(installedListener);
     initialize().then(readyResolve, readyReject);
     return ready;
   }
@@ -506,6 +552,7 @@ export function createExtensionBackground({
     if (stopped) return;
     stopped = true;
     chromeApi.runtime.onMessage.removeListener?.(messageListener);
+    chromeApi.runtime.onInstalled?.removeListener?.(installedListener);
     instances.clear();
     generations.clear();
     try { socket?.off?.(); } catch { /* no-op */ }

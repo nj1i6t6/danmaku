@@ -37,6 +37,7 @@ function normalizeDurableState(value = {}) {
     ? String(source.currentRoomCode)
     : currentRoom?.roomCode;
   return {
+    privacyConsent: source.privacyConsent === true,
     settings: normalizeSettings(source.settings),
     ...(typeof source.clientId === 'string' && /^[A-Za-z0-9._:-]{1,128}$/.test(source.clientId) ? { clientId: source.clientId } : {}),
     ...(currentRoomCode ? { currentRoomCode } : {}),

@@ -1,1 +1,30 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>彈幕 Overlay 設定</title><link rel="stylesheet" href="options.css"></head><body><main><h1>彈幕 Overlay 設定</h1><section class="notice"><h2>網站存取說明</h2><p>為了在一般 HTTP/HTTPS 網頁顯示自己的 Shadow DOM Overlay，擴充套件需要廣泛網站權限。它不讀取或傳送頁面正文、表單、Cookie、localStorage 或網址參數，也不建立頁面與擴充套件間的任意訊息橋接。</p></section><form id="appearance-form"><label>懸浮球大小 <input id="ball-size" type="range" min="32" max="96"></label><label>彈幕字體大小 <input id="danmaku-size" type="range" min="12" max="48"></label><label>面板寬度 <input id="panel-width" type="range" min="280" max="800"></label><div class="actions"><button type="submit">儲存</button><button id="reset" type="button" class="secondary">恢復外觀預設</button></div></form><p id="result" role="status"></p><section><h2>隱私與安全</h2><p>房主管理憑證只保存在背景 trusted storage，content script 與網頁都無法取得。公開 source build 預設只連本機 endpoint。</p></section></main><script src="options.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>彈幕 Overlay 設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <h1>彈幕 Overlay 設定</h1>
+    <section id="privacy-consent" class="consent" aria-labelledby="privacy-consent-title">
+      <h2 id="privacy-consent-title">隱私同意</h2>
+      <p>彈幕 Overlay 會處理暱稱、彈幕訊息、隨機裝置識別碼、房間憑證及連線 IP，以提供聊天室、房間管理及防止濫用功能。擴充功能不會讀取或傳送目前網頁內容。</p>
+      <p><a href="https://github.com/nj1i6t6/danmaku/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">查看完整隱私權政策</a></p>
+      <p id="consent-status" role="status">正在讀取同意狀態…</p>
+      <div class="actions">
+        <button id="consent-accept" type="button">同意並開始使用</button>
+        <button id="consent-decline" type="button" class="secondary">暫不同意</button>
+        <button id="consent-revoke" type="button" class="danger" hidden>撤回同意並中斷連線</button>
+      </div>
+    </section>
+    <section class="notice"><h2>網站存取說明</h2><p>為了在一般 HTTP/HTTPS 網頁顯示自己的 Shadow DOM Overlay，擴充套件需要廣泛網站權限。它不讀取或傳送頁面正文、表單、Cookie、localStorage 或網址參數，也不建立頁面與擴充套件間的任意訊息橋接。</p></section>
+    <form id="appearance-form"><label>懸浮球大小 <input id="ball-size" type="range" min="32" max="96"></label><label>彈幕字體大小 <input id="danmaku-size" type="range" min="12" max="48"></label><label>面板寬度 <input id="panel-width" type="range" min="280" max="800"></label><div class="actions"><button type="submit">儲存</button><button id="reset" type="button" class="secondary">恢復外觀預設</button></div></form>
+    <p id="result" role="status"></p>
+    <section><h2>隱私與安全</h2><p>房主管理憑證只保存在背景 trusted storage，content script 與網頁都無法取得。撤回同意後會立即中斷連線並移除隨機裝置識別碼。</p></section>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

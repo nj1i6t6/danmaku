@@ -1,1 +1,28 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>彈幕 Overlay</title><link rel="stylesheet" href="popup.css"></head><body><main><header><img src="icons/icon-48.png" alt=""><div><h1>彈幕 Overlay</h1><p id="status">檢查中…</p></div></header><p id="details">正在確認目前頁面狀態。</p><button id="toggle-overlay" type="button" disabled>切換面板</button><button id="open-options" class="secondary" type="button">開啟完整設定</button><small>擴充套件只建立自身 Overlay，不讀取或傳送宿主頁面正文、表單、Cookie、localStorage 或網址參數。</small></main><script src="popup.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>彈幕 Overlay</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header><img src="icons/icon-48.png" alt=""><div><h1>彈幕 Overlay</h1><p id="status">檢查中…</p></div></header>
+    <section id="privacy-consent" hidden aria-labelledby="privacy-consent-title">
+      <h2 id="privacy-consent-title">開始前請確認隱私說明</h2>
+      <p>彈幕 Overlay 會處理暱稱、彈幕訊息、隨機裝置識別碼、房間憑證及連線 IP，以提供聊天室、房間管理及防止濫用功能。擴充功能不會讀取或傳送目前網頁內容。</p>
+      <p><a href="https://github.com/nj1i6t6/danmaku/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">查看完整隱私權政策</a></p>
+      <button id="consent-accept" type="button">同意並開始使用</button>
+      <button id="consent-decline" class="secondary" type="button">暫不同意</button>
+    </section>
+    <section id="app-controls">
+      <p id="details">正在確認目前頁面狀態。</p>
+      <button id="toggle-overlay" type="button" disabled>切換面板</button>
+      <button id="open-options" class="secondary" type="button">開啟完整設定</button>
+      <small>擴充套件只建立自身 Overlay，不讀取或傳送宿主頁面正文、表單、Cookie、localStorage 或網址參數。</small>
+    </section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

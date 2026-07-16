@@ -14,6 +14,7 @@ const releaseRoot = 'https://github.com/nj1i6t6/danmaku/releases/download/v1.0.3
 const androidDownload = `${releaseRoot}/danmaku-overlay-android-0.1.3.apk`;
 const windowsDownload = `${releaseRoot}/danmaku-overlay_0.1.0_x64-setup.exe`;
 const macosDownload = `${releaseRoot}/danmaku-overlay_0.1.0_aarch64.dmg`;
+const extensionDownload = `${releaseRoot}/danmaku-overlay-extension-1.0.0.zip`;
 const repository = 'https://github.com/nj1i6t6/danmaku';
 const pageSource = indexSource
   .replace(/\s*<link\b[^>]+rel=["'](?:icon|apple-touch-icon|stylesheet)["'][^>]*>/gi, '')
@@ -78,7 +79,7 @@ for (const width of widths) {
     expect(metrics.htmlOverflow).toBeLessThanOrEqual(0);
     expect(metrics.bodyOverflow).toBeLessThanOrEqual(0);
     expect(metrics.cardsInsideViewport).toBe(true);
-    expect(metrics.focusable).toBe(16);
+    expect(metrics.focusable).toBe(18);
     expect(metrics.headingOrder[0]).toBe(1);
     expect(metrics.headingOrder.slice(1).every((level) => level === 2 || level === 3)).toBe(true);
     expect(metrics.fetchCalls).toHaveLength(0);
@@ -130,16 +131,19 @@ test('configured platform destinations replace disabled buttons with hardened HT
     ['android', androidDownload],
     ['windows', windowsDownload],
     ['macos', macosDownload],
+    ['chrome', extensionDownload],
+    ['edge', extensionDownload],
   ]);
   for (const [platform, href] of expected) {
     const anchor = page.locator(`[data-platform="${platform}"] a.entry-button`);
     await expect(anchor).toHaveAttribute('href', href);
     await expect(anchor).toHaveAttribute('target', '_blank');
     await expect(anchor).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(anchor).not.toHaveClass(/is-pending/);
+    await expect(anchor).toHaveCSS('cursor', 'pointer');
+    await expect(anchor).toHaveCSS('pointer-events', 'auto');
   }
-  await expect(page.locator('[data-platform="chrome"] button[data-link-key="chromeStore"]')).toBeDisabled();
-  await expect(page.locator('[data-platform="edge"] button[data-link-key="edgeStore"]')).toBeDisabled();
-  await expect(page.locator('[data-platform] button[data-link-key]')).toHaveCount(2);
+  await expect(page.locator('[data-platform] button[data-link-key]')).toHaveCount(0);
   await expect(page.locator('.configurable-link a[href="https://github.com/nj1i6t6/danmaku"]')).toHaveCount(2);
   await expect(page.locator('.configurable-link a[href="https://github.com/nj1i6t6/danmaku"]').first()).toHaveAttribute('href', repository);
   await page.close();
