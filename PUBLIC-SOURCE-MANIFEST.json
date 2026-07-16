@@ -365,8 +365,8 @@
     },
     {
       "path": "app/package.json",
-      "size": 401,
-      "sha256": "6929033a5d8f09dc6da7b272c9bd571048ef30250d08f0313dd308c06270f905"
+      "size": 385,
+      "sha256": "fad4be0c6d2f7501d926d16574ebafbd8ff256365a65c13d1eeeff6d27b7d28e"
     },
     {
       "path": "app/protection/colorValidator.js",
@@ -1175,8 +1175,8 @@
     },
     {
       "path": "scripts/tests/workflows.test.mjs",
-      "size": 17966,
-      "sha256": "42f9810a4fe26dc41db08a642e6578e9445516c6de2968a8ae6e089c45587c87"
+      "size": 18185,
+      "sha256": "68b5e2e71c8ab25f8942641c66c868db28e0bcf400e4b5fbf4d3833adfc41090"
     },
     {
       "path": "scripts/verify-public-tree.mjs",

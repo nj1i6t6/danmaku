@@ -67,6 +67,11 @@ test('Tauri manifest and hosted workflows use the locked dependency MSRV', async
   }
 });
 
+test('backend npm test uses Node discovery instead of shell glob expansion', async () => {
+  const packageJson = JSON.parse(await read('app/package.json'));
+  assert.equal(packageJson.scripts.test, 'node --test');
+});
+
 test('workflows are verification-only, least-privilege, and use GitHub-hosted runners', async () => {
   const names = (await readdir(new URL('.github/workflows/', ROOT))).filter((name) => /\.ya?ml$/.test(name));
   assert.deepEqual(names.sort(), Object.keys(required).sort());
