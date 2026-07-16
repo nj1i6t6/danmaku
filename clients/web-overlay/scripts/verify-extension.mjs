@@ -7,6 +7,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', '..', '..');
 const argumentIndex = process.argv.indexOf('--dist');
 const dist = argumentIndex >= 0 ? path.resolve(process.argv[argumentIndex + 1]) : path.join(root, 'extension', 'dist');
+const storePackage = process.argv.includes('--store-package');
 const errors = [];
 const allowed = [
   'background.js', 'content.js',
@@ -67,7 +68,11 @@ if (manifest) {
     }
   }
   if (directives.size !== 3) errors.push('extension CSP contains unexpected directives');
-  if (typeof manifest.key !== 'string' || manifest.key.length < 200 || /PRIVATE KEY/.test(manifest.key)) errors.push('stable development identity must contain public key material only');
+  if (storePackage) {
+    if (Object.hasOwn(manifest, 'key')) errors.push('store package manifest must omit the development key');
+  } else if (typeof manifest.key !== 'string' || manifest.key.length < 200 || /PRIVATE KEY/.test(manifest.key)) {
+    errors.push('stable development identity must contain public key material only');
+  }
 }
 
 for (const file of walk(dist)) {

@@ -620,8 +620,8 @@
     },
     {
       "path": "clients/web-overlay/scripts/package-extension.mjs",
-      "size": 2600,
-      "sha256": "8f44510d0bf47bede44fe3fdf8334cbb52591178b4db0d73f993f689bf7ef681"
+      "size": 2881,
+      "sha256": "00db12ac9301e0f4bf6f9b9fbaba2b5ff9ed9157737fb4f878b9d9129e2e8ae1"
     },
     {
       "path": "clients/web-overlay/scripts/server-url.mjs",
@@ -635,8 +635,8 @@
     },
     {
       "path": "clients/web-overlay/scripts/verify-extension.mjs",
-      "size": 7342,
-      "sha256": "4ee1bf37f60a4026a5b8e496fa23617cafadff50e5278107bd65cd56953ff46d"
+      "size": 7553,
+      "sha256": "b75d1389fb8678f483100e88dff904858881d37c1968f378befb9b86894083b8"
     },
     {
       "path": "clients/web-overlay/src/core/client-identity.js",

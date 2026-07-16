@@ -20,6 +20,10 @@ const files = walk(dist).map((file) => path.relative(dist, file).replaceAll(path
 const stagingDir = fs.mkdtempSync(path.join(releaseDir, '.package-'));
 try {
   fs.cpSync(dist, stagingDir, { recursive: true });
+  const storeManifestPath = path.join(stagingDir, 'manifest.json');
+  const storeManifest = JSON.parse(fs.readFileSync(storeManifestPath, 'utf8'));
+  delete storeManifest.key;
+  fs.writeFileSync(storeManifestPath, `${JSON.stringify(storeManifest, null, 2)}\n`);
   const reproducibleTime = new Date('1980-01-01T00:00:00.000Z');
   for (const file of walk(stagingDir)) {
     fs.chmodSync(file, 0o644);
@@ -39,7 +43,7 @@ if (JSON.stringify(members) !== JSON.stringify(files)) throw new Error('ZIP memb
 const testDir = fs.mkdtempSync(path.join(releaseDir, '.verify-'));
 try {
   execFileSync('unzip', ['-q', zipPath, '-d', testDir], { stdio: 'inherit' });
-  execFileSync(process.execPath, [path.join(here, 'verify-extension.mjs'), '--dist', testDir], { stdio: 'inherit' });
+  execFileSync(process.execPath, [path.join(here, 'verify-extension.mjs'), '--dist', testDir, '--store-package'], { stdio: 'inherit' });
 } finally {
   fs.rmSync(testDir, { recursive: true, force: true });
 }
