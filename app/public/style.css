@@ -837,7 +837,7 @@ main {
 
 .legal-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -847,6 +847,19 @@ main {
   border: 1px solid var(--line);
   background: rgba(13, 20, 22, 0.4);
   scroll-margin-top: 28px;
+}
+
+a.legal-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+a.legal-card:hover,
+a.legal-card:focus-visible {
+  border-color: var(--line-bright);
+  background: rgba(27, 41, 43, 0.72);
 }
 
 .legal-card h3 {
@@ -859,6 +872,18 @@ main {
   margin: 0;
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.trust-heading a {
+  color: var(--mint);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.22em;
+}
+
+.trust-heading a:hover,
+.trust-heading a:focus-visible {
+  color: var(--ink);
 }
 
 .site-footer {
@@ -915,7 +940,8 @@ main {
     margin-inline: auto;
   }
 
-  .platform-grid {
+  .platform-grid,
+  .legal-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

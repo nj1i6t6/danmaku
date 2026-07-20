@@ -4,15 +4,50 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d1416">
-  <meta name="description" content="彈幕 Overlay：把即時彈幕疊在 Android、Windows、macOS、Chrome 與 Edge 的畫面上。">
+  <meta name="description" content="彈幕 Overlay：把即時彈幕疊在 Android、Windows、macOS、Chrome 與 Edge 的畫面上。不讀取、不上傳宿主頁面內容。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://danmaku.kolvid.app/">
   <meta property="og:title" content="彈幕 Overlay">
   <meta property="og:description" content="跨 Android、桌面與瀏覽器的即時彈幕 Overlay。">
   <meta property="og:type" content="website">
-  <title>彈幕 Overlay</title>
+  <meta property="og:url" content="https://danmaku.kolvid.app/">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:site_name" content="彈幕 Overlay">
+  <meta property="og:image" content="https://danmaku.kolvid.app/icons/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="彈幕 Overlay：讓即時彈幕留在畫面上">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="彈幕 Overlay">
+  <meta name="twitter:description" content="跨 Android、桌面與瀏覽器的即時彈幕 Overlay。">
+  <meta name="twitter:image" content="https://danmaku.kolvid.app/icons/og.png">
+  <title>彈幕 Overlay｜Android、桌面與瀏覽器即時彈幕</title>
   <link rel="icon" href="/icons/icon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="/style.css">
   <script src="/status.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "彈幕 Overlay",
+    "alternateName": "Danmaku Overlay",
+    "url": "https://danmaku.kolvid.app/",
+    "description": "把即時彈幕疊在 Android、Windows、macOS、Chrome 與 Edge 的畫面上。不讀取、不上傳宿主頁面內容。",
+    "applicationCategory": "CommunicationApplication",
+    "operatingSystem": "Android, Windows, macOS, Chrome, Edge",
+    "inLanguage": "zh-Hant-TW",
+    "image": "https://danmaku.kolvid.app/icons/og.png",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "TWD"
+    },
+    "codeRepository": "https://github.com/nj1i6t6/danmaku",
+    "license": "https://github.com/nj1i6t6/danmaku/blob/main/LICENSE",
+    "isAccessibleForFree": true
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">跳至主要內容</a>
@@ -155,7 +190,7 @@
       <div class="trust-heading">
         <p class="kicker">PRIVACY BY DESIGN</p>
         <h2 id="trust-title">只做顯示所需的事</h2>
-        <p>彈幕可以很熱鬧，權限說明不必模糊。</p>
+        <p>彈幕可以很熱鬧，權限說明不必模糊。完整文件在公開庫：<a href="https://github.com/nj1i6t6/danmaku/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">隱私政策</a>、<a href="https://github.com/nj1i6t6/danmaku/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">安全政策</a>。</p>
       </div>
       <div class="trust-details">
         <div class="trust-block" id="security">
@@ -177,12 +212,29 @@
     <section class="legal-section" aria-labelledby="legal-title">
       <div class="section-intro legal-intro">
         <div><p class="kicker">READ BEFORE INSTALL</p><h2 id="legal-title">把必要的話，放在入口旁邊</h2></div>
-        <p>正式版本會持續補齊對應文件；在此之前，先保留清楚可到達的導覽位置。</p>
+        <p>隱私、安全、條款與授權的完整正文都在 GitHub 公開庫；以下卡片直達對應文件。</p>
       </div>
       <div class="legal-grid">
-        <article class="legal-card" id="terms"><p class="trust-label">條款</p><h3>合理使用</h3><p>請只在你有權使用的畫面與服務中顯示彈幕，並遵守所在地與平台規範。</p></article>
-        <article class="legal-card" id="license"><p class="trust-label">授權</p><h3>公開原始碼</h3><p>原始碼、授權條文與自架說明已在公開庫入口提供。</p></article>
-        <article class="legal-card" id="about"><p class="trust-label">關於</p><h3>stock-danmaku</h3><p>一個把即時彈幕帶回內容旁邊的 Overlay 專案；不建立 Web 聊天客戶端。</p></article>
+        <a class="legal-card" id="privacy-doc" href="https://github.com/nj1i6t6/danmaku/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">
+          <p class="trust-label">隱私</p>
+          <h3>隱私政策</h3>
+          <p>說明會處理哪些資料、擴充功能同意門檻，以及本機／伺服器資料邊界。</p>
+        </a>
+        <a class="legal-card" id="security-doc" href="https://github.com/nj1i6t6/danmaku/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">
+          <p class="trust-label">安全</p>
+          <h3>安全政策</h3>
+          <p>支援範圍、漏洞私下通報方式，以及不應公開貼出的敏感資訊。</p>
+        </a>
+        <a class="legal-card" id="terms" href="https://github.com/nj1i6t6/danmaku/blob/main/TERMS-OF-SERVICE.md" target="_blank" rel="noopener noreferrer">
+          <p class="trust-label">條款</p>
+          <h3>服務條款</h3>
+          <p>官方服務使用條件、內容責任與可接受使用的基本邊界。</p>
+        </a>
+        <a class="legal-card" id="license" href="https://github.com/nj1i6t6/danmaku/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
+          <p class="trust-label">授權</p>
+          <h3>軟體授權</h3>
+          <p>原始碼使用、修改與散布條件；商用限制以 LICENSE 正文為準。</p>
+        </a>
       </div>
     </section>
   </main>
@@ -197,10 +249,10 @@
     </div>
     <div class="footer-links">
       <nav aria-label="法律與專案導覽">
-        <a href="#privacy">隱私</a>
-        <a href="#security">安全</a>
-        <a href="#terms">條款</a>
-        <a href="#license">授權</a>
+        <a href="https://github.com/nj1i6t6/danmaku/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">隱私</a>
+        <a href="https://github.com/nj1i6t6/danmaku/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">安全</a>
+        <a href="https://github.com/nj1i6t6/danmaku/blob/main/TERMS-OF-SERVICE.md" target="_blank" rel="noopener noreferrer">條款</a>
+        <a href="https://github.com/nj1i6t6/danmaku/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">授權</a>
       </nav>
       <div class="configurable-link footer-repository" data-link-key="repository">
         <button class="text-button is-pending" type="button" disabled data-link-label="公開原始碼">公開原始碼 <span>準備中</span></button>

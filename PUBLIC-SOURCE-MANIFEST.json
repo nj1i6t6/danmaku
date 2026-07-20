@@ -434,9 +434,14 @@
       "sha256": "d6d575f01c70fd22767489598f78c98b115e2b5f17b3155449e0c87a287bf8b9"
     },
     {
+      "path": "app/public/icons/og.png",
+      "size": 41142,
+      "sha256": "214db130aa857141d56ace989035630c19516179bbc87913833b43655be3f962"
+    },
+    {
       "path": "app/public/index.html",
-      "size": 12965,
-      "sha256": "2dbd39e96f8e8d2e49ebf1bbb172d84d4cf76c096b9e95e0f5102cfd77f569ad"
+      "size": 16158,
+      "sha256": "b1c9c71e7aaaaee43106cff5d0275f106d02d941286e719798bfeb955fd93b21"
     },
     {
       "path": "app/public/robots.txt",
@@ -445,8 +450,8 @@
     },
     {
       "path": "app/public/sitemap.xml",
-      "size": 235,
-      "sha256": "24075ea1d05d635be4568dec7f156a5afe0a973f39acb38f424c94d26f955c8d"
+      "size": 269,
+      "sha256": "5a8bcbb80a77b71343c8058d9fc88465cdb00acbd6e1c12cafdfd3fd648d65ab"
     },
     {
       "path": "app/public/status.js",
@@ -455,8 +460,8 @@
     },
     {
       "path": "app/public/style.css",
-      "size": 19446,
-      "sha256": "9149b92ec6de0223b03e48b44ec31dbbcd586a9a3d33104e9b80108096646269"
+      "size": 19959,
+      "sha256": "f17ad0bfc98148b0a2c7ff7a9072040cbcbc23f9d0bed9c88cc6dfea8f8808c0"
     },
     {
       "path": "app/rooms/access-guard.js",
@@ -540,8 +545,8 @@
     },
     {
       "path": "app/tests/landing-page.test.js",
-      "size": 12327,
-      "sha256": "0c957349dab34c88fa05cb1dee3c89774bdb94f6759283c0bf42fce6bd6ac118"
+      "size": 14798,
+      "sha256": "8d6be45a66f1fe32b1f558b13fd2343b610ac7081ccfac71831e905b1e573f65"
     },
     {
       "path": "app/tests/load-tools.test.js",

@@ -13,7 +13,29 @@ const RELEASE_ROOT = 'https://github.com/nj1i6t6/danmaku/releases/download/v1.0.
 const ANDROID_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay-android-0.1.3.apk`;
 const WINDOWS_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay_0.1.0_x64-setup.exe`;
 const MACOS_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay_0.1.0_aarch64.dmg`;
+const EXTENSION_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay-extension-1.0.0.zip`;
 const REPOSITORY = 'https://github.com/nj1i6t6/danmaku';
+const SITE_ORIGIN = 'https://danmaku.kolvid.app';
+const OG_IMAGE = `${SITE_ORIGIN}/icons/og.png`;
+const PRIVACY_DOC = `${REPOSITORY}/blob/main/PRIVACY.md`;
+const SECURITY_DOC = `${REPOSITORY}/blob/main/SECURITY.md`;
+const TERMS_DOC = `${REPOSITORY}/blob/main/TERMS-OF-SERVICE.md`;
+const LICENSE_DOC = `${REPOSITORY}/blob/main/LICENSE`;
+const SCHEMA_ORG = 'https://schema.org';
+const ALLOWED_LANDING_URLS = new Set([
+  SCHEMA_ORG,
+  `${SITE_ORIGIN}/`,
+  OG_IMAGE,
+  ANDROID_DOWNLOAD,
+  WINDOWS_DOWNLOAD,
+  MACOS_DOWNLOAD,
+  EXTENSION_DOWNLOAD,
+  REPOSITORY,
+  PRIVACY_DOC,
+  SECURITY_DOC,
+  TERMS_DOC,
+  LICENSE_DOC,
+]);
 
 function request(url, { method = 'GET', headers = {}, body, timeoutMs = 2_000 } = {}) {
   return new Promise((resolve, reject) => {
@@ -106,9 +128,15 @@ test('landing responses use a local-only CSP that cannot be framed', async () =>
 test('root is a minimal local-only Overlay landing page with an exact asset allowlist', async () => {
   await withService(async (url) => {
     const response = await request(`${url}/`);
+    const externalUrls = [...response.body.matchAll(/\bhttps?:\/\/[^"'\s<]+/gi)].map((match) => match[0]);
 
     assert.equal(response.status, 200);
-    assert.match(response.body, /<title>彈幕 Overlay<\/title>/);
+    assert.match(response.body, /<title>彈幕 Overlay｜/);
+    assert.match(response.body, /rel="canonical"[^>]*href="https:\/\/danmaku\.kolvid\.app\/"/);
+    assert.match(response.body, /property="og:image"[^>]*content="https:\/\/danmaku\.kolvid\.app\/icons\/og\.png"/);
+    assert.match(response.body, /name="twitter:card"[^>]*content="summary_large_image"/);
+    assert.match(response.body, /type="application\/ld\+json"/);
+    assert.match(response.body, /"@type":\s*"SoftwareApplication"/);
     for (const platform of ['Android', 'Windows', 'macOS', 'Chrome', 'Edge']) {
       assert.match(response.body, new RegExp(platform));
     }
@@ -124,12 +152,29 @@ test('root is a minimal local-only Overlay landing page with an exact asset allo
       ['/status.js'],
     );
     assert.doesNotMatch(response.body, /socket\.io|tradingview|api\/search|symbols\.json|股票搜尋|看盤|<iframe|<object|<embed|manifest\.webmanifest|\/js\//i);
-    assert.deepEqual(
-      [...response.body.matchAll(/\bhttps?:\/\/[^"'\s<]+/gi)].map((match) => match[0]),
-      [ANDROID_DOWNLOAD, WINDOWS_DOWNLOAD, MACOS_DOWNLOAD, REPOSITORY],
-      'only configured GitHub destinations may appear in landing HTML',
+    assert.ok(
+      externalUrls.every((href) => ALLOWED_LANDING_URLS.has(href)),
+      `unexpected external URL: ${externalUrls.filter((href) => !ALLOWED_LANDING_URLS.has(href)).join(', ')}`,
     );
-    assert.doesNotMatch(response.body, /<script\b(?![^>]*\bsrc=)|\sstyle=/i);
+    for (const required of [
+      ANDROID_DOWNLOAD,
+      WINDOWS_DOWNLOAD,
+      MACOS_DOWNLOAD,
+      EXTENSION_DOWNLOAD,
+      REPOSITORY,
+      PRIVACY_DOC,
+      SECURITY_DOC,
+      TERMS_DOC,
+      LICENSE_DOC,
+      OG_IMAGE,
+      SCHEMA_ORG,
+    ]) {
+      assert.ok(externalUrls.includes(required), `missing required URL: ${required}`);
+    }
+    assert.doesNotMatch(
+      response.body,
+      /<script\b(?![^>]*(?:\bsrc=|type=["']application\/ld\+json["']))|\sstyle=/i,
+    );
   });
 });
 
@@ -145,16 +190,21 @@ test('landing exposes five platform entries and keeps unconfigured destinations 
     assert.match(response.body, new RegExp(`data-android-download="${ANDROID_DOWNLOAD.replaceAll('.', '\\.')}"`));
     assert.match(response.body, new RegExp(`data-windows-download="${WINDOWS_DOWNLOAD.replaceAll('.', '\\.')}"`));
     assert.match(response.body, new RegExp(`data-macos-download="${MACOS_DOWNLOAD.replaceAll('.', '\\.')}"`));
+    assert.match(response.body, new RegExp(`data-extension-download="${EXTENSION_DOWNLOAD.replaceAll('.', '\\.')}"`));
     assert.doesNotMatch(response.body, /data-github-releases=/);
     assert.match(response.body, /data-chrome-store=""/);
     assert.match(response.body, /data-edge-store=""/);
     assert.match(response.body, new RegExp(`data-repository="${REPOSITORY}"`));
     assert.equal([...response.body.matchAll(/<button\b[^>]*\bdisabled\b/g)].length, 7);
     assert.doesNotMatch(response.body, /href=""/i);
-    assert.match(response.body, /原始碼、授權條文與自架說明已在公開庫入口提供/);
-    for (const section of ['privacy', 'security', 'terms', 'license']) {
-      assert.match(response.body, new RegExp(`id="${section}"`));
-    }
+    assert.match(response.body, new RegExp(PRIVACY_DOC.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(response.body, new RegExp(SECURITY_DOC.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(response.body, new RegExp(TERMS_DOC.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(response.body, new RegExp(LICENSE_DOC.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(response.body, /id="privacy"/);
+    assert.match(response.body, /id="security"/);
+    assert.match(response.body, /id="terms"/);
+    assert.match(response.body, /id="license"/);
   });
 });
 
@@ -274,7 +324,17 @@ test('public metadata and package configuration describe only the Overlay servic
     assert.match(robots.body, /^Sitemap: https:\/\/danmaku\.kolvid\.app\/sitemap\.xml$/m);
     assert.equal(sitemap.status, 200);
     assert.match(sitemap.body, /<loc>https:\/\/danmaku\.kolvid\.app\/<\/loc>/);
+    assert.match(sitemap.body, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
     assert.deepEqual([...robots.body.matchAll(/^Allow:\s*(.+)$/gm)].map((match) => match[1]), ['/']);
     assert.equal([...sitemap.body.matchAll(/<loc>/g)].length, 1);
+  });
+});
+
+test('landing serves a local Open Graph image asset', async () => {
+  await withService(async (url) => {
+    const response = await request(`${url}/icons/og.png`);
+    assert.equal(response.status, 200);
+    assert.match(response.headers['content-type'] || '', /image\/png/);
+    assert.ok(Buffer.byteLength(response.body, 'binary') > 1000);
   });
 });
