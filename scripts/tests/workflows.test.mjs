@@ -171,7 +171,7 @@ test('Windows and macOS use explicit portable Node client tests instead of npm t
   const clientTests = (await readdir(new URL('clients/web-overlay/tests/', ROOT)))
     .filter((name) => name.endsWith('.test.mjs') && name !== 'build.test.mjs')
     .sort();
-  assert.equal(clientTests.length, 19, 'the portable client test set must contain exactly 19 tests');
+  assert.equal(clientTests.length, 20, 'the portable client test set must contain exactly 20 tests');
   const expectedCommand = [
     'node',
     '--test',

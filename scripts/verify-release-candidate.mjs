@@ -155,7 +155,18 @@ function verifyLanding() {
     errors.push('landing index.html is missing');
     return;
   }
-  if (/<script[^>]+src=["']https?:\/\//i.test(html) || /<link[^>]+href=["']https?:\/\//i.test(html)) errors.push('landing loads a remote script or stylesheet');
+  // Canonical/OG metadata may use absolute https URLs; only remote executable assets are forbidden.
+  if (/<script\b[^>]*\bsrc=["']https?:\/\//i.test(html)) errors.push('landing loads a remote script or stylesheet');
+  for (const match of html.matchAll(/<link\b[^>]*>/gi)) {
+    const tag = match[0];
+    const rel = /rel=["']([^"']+)["']/i.exec(tag)?.[1] || '';
+    const href = /href=["']([^"']+)["']/i.exec(tag)?.[1] || '';
+    const isStylesheet = rel.split(/\s+/).some((token) => token.toLowerCase() === 'stylesheet');
+    if (isStylesheet && /^https?:\/\//i.test(href)) {
+      errors.push('landing loads a remote script or stylesheet');
+      break;
+    }
+  }
   if (/socket\.io|io\s*\(/i.test(`${html}\n${status}`)) errors.push('landing initializes a chat Socket');
   if (/google-analytics|googletagmanager|segment|mixpanel|hotjar/i.test(`${html}\n${status}`)) errors.push('landing contains analytics code');
   if (/\bfetch\s*\(|\/healthz|new\s+WebSocket|new\s+EventSource/i.test(status)) errors.push('landing script performs a backend or network request');

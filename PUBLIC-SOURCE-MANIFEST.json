@@ -24,13 +24,13 @@
     },
     {
       "path": ".github/workflows/build-macos.yml",
-      "size": 3986,
-      "sha256": "bc5beccb8c9936bc3ff7ffbb462c9259a1cf5b77c3f701481c4a24305412d03e"
+      "size": 4042,
+      "sha256": "e9c6f82329815f8f9ad5181a0e875ba063970460955092ebd21822e483f7ef84"
     },
     {
       "path": ".github/workflows/build-windows.yml",
-      "size": 4591,
-      "sha256": "6ca003774969930c693267ef177cfd98333c7ab42e7e9d585e3c27b34d24fdf2"
+      "size": 4647,
+      "sha256": "818042b4197393d74abc56f0b9d69f77e27d992bda428fff44e2ce7bb788c397"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -1191,7 +1191,7 @@
     {
       "path": "scripts/tests/workflows.test.mjs",
       "size": 18435,
-      "sha256": "3770d70114ad51b879bd36f6ff41156ee83f4fb194ce5516b3ce4f23636653bd"
+      "sha256": "d57f6d70eed371da311d80a5063cc6ed16be0352b4ad1b4b25d9c5f276859c52"
     },
     {
       "path": "scripts/verify-public-tree.mjs",
@@ -1200,8 +1200,8 @@
     },
     {
       "path": "scripts/verify-release-candidate.mjs",
-      "size": 14140,
-      "sha256": "b437f62546620c0335ed45935799735c87349ac565b52426f95c3360f19fcfa8"
+      "size": 14647,
+      "sha256": "aef2fd01355b420911b2b3c4f8b630c5906cb5cb291ba33182cedda70cd7d7c9"
     },
     {
       "path": "scripts/verify-retired-stock.mjs",
