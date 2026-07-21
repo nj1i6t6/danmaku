@@ -440,8 +440,8 @@
     },
     {
       "path": "app/public/index.html",
-      "size": 16158,
-      "sha256": "b1c9c71e7aaaaee43106cff5d0275f106d02d941286e719798bfeb955fd93b21"
+      "size": 16259,
+      "sha256": "7e61e6c0dc2a630fd5904ec3b31af51521dfd4752654e258be7a69615dbb12ba"
     },
     {
       "path": "app/public/robots.txt",
@@ -451,7 +451,7 @@
     {
       "path": "app/public/sitemap.xml",
       "size": 269,
-      "sha256": "5a8bcbb80a77b71343c8058d9fc88465cdb00acbd6e1c12cafdfd3fd648d65ab"
+      "sha256": "0b038b6c39ebc815094a75eb7b1e11abae805b7ddeea0ba926a2c1910cab9cc5"
     },
     {
       "path": "app/public/status.js",
@@ -545,8 +545,8 @@
     },
     {
       "path": "app/tests/landing-page.test.js",
-      "size": 14798,
-      "sha256": "8d6be45a66f1fe32b1f558b13fd2343b610ac7081ccfac71831e905b1e573f65"
+      "size": 15315,
+      "sha256": "781bcfc7501107e08b612b1dc51aaa904bef2cf45471cba7d0ce9cfa15e1ae01"
     },
     {
       "path": "app/tests/load-tools.test.js",
@@ -880,8 +880,8 @@
     },
     {
       "path": "clients/web-overlay/tests/landing-runtime.spec.mjs",
-      "size": 7181,
-      "sha256": "48bedf0ab0fc0201646ed986882b5cef8a63caab07d1a77d71cde597cb6c35f5"
+      "size": 7272,
+      "sha256": "7208f921941567a407dc69f03ce29207d0419dda192cc1fdf1236c132984dad3"
     },
     {
       "path": "clients/web-overlay/tests/overlay-controller.test.mjs",

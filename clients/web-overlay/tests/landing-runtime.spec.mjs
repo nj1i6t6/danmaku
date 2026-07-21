@@ -15,6 +15,7 @@ const androidDownload = `${releaseRoot}/danmaku-overlay-android-0.1.3.apk`;
 const windowsDownload = `${releaseRoot}/danmaku-overlay_0.1.0_x64-setup.exe`;
 const macosDownload = `${releaseRoot}/danmaku-overlay_0.1.0_aarch64.dmg`;
 const extensionDownload = `${releaseRoot}/danmaku-overlay-extension-1.0.0.zip`;
+const chromeStore = 'https://chromewebstore.google.com/detail/aodgflcajjcogogdmondjccplikngddi';
 const repository = 'https://github.com/nj1i6t6/danmaku';
 const pageSource = indexSource
   .replace(/\s*<link\b[^>]+rel=["'](?:icon|apple-touch-icon|stylesheet)["'][^>]*>/gi, '')
@@ -131,7 +132,7 @@ test('configured platform destinations replace disabled buttons with hardened HT
     ['android', androidDownload],
     ['windows', windowsDownload],
     ['macos', macosDownload],
-    ['chrome', extensionDownload],
+    ['chrome', chromeStore],
     ['edge', extensionDownload],
   ]);
   for (const [platform, href] of expected) {

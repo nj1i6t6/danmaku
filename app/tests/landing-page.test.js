@@ -14,6 +14,7 @@ const ANDROID_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay-android-0.1.3.apk`;
 const WINDOWS_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay_0.1.0_x64-setup.exe`;
 const MACOS_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay_0.1.0_aarch64.dmg`;
 const EXTENSION_DOWNLOAD = `${RELEASE_ROOT}/danmaku-overlay-extension-1.0.0.zip`;
+const CHROME_STORE = 'https://chromewebstore.google.com/detail/aodgflcajjcogogdmondjccplikngddi';
 const REPOSITORY = 'https://github.com/nj1i6t6/danmaku';
 const SITE_ORIGIN = 'https://danmaku.kolvid.app';
 const OG_IMAGE = `${SITE_ORIGIN}/icons/og.png`;
@@ -30,6 +31,7 @@ const ALLOWED_LANDING_URLS = new Set([
   WINDOWS_DOWNLOAD,
   MACOS_DOWNLOAD,
   EXTENSION_DOWNLOAD,
+  CHROME_STORE,
   REPOSITORY,
   PRIVACY_DOC,
   SECURITY_DOC,
@@ -161,6 +163,7 @@ test('root is a minimal local-only Overlay landing page with an exact asset allo
       WINDOWS_DOWNLOAD,
       MACOS_DOWNLOAD,
       EXTENSION_DOWNLOAD,
+      CHROME_STORE,
       REPOSITORY,
       PRIVACY_DOC,
       SECURITY_DOC,
@@ -192,8 +195,10 @@ test('landing exposes five platform entries and keeps unconfigured destinations 
     assert.match(response.body, new RegExp(`data-macos-download="${MACOS_DOWNLOAD.replaceAll('.', '\\.')}"`));
     assert.match(response.body, new RegExp(`data-extension-download="${EXTENSION_DOWNLOAD.replaceAll('.', '\\.')}"`));
     assert.doesNotMatch(response.body, /data-github-releases=/);
-    assert.match(response.body, /data-chrome-store=""/);
+    assert.match(response.body, new RegExp(`data-chrome-store="${CHROME_STORE.replaceAll('.', '\\.')}"`));
     assert.match(response.body, /data-edge-store=""/);
+    assert.match(response.body, /data-link-key="chromeStore"/);
+    assert.match(response.body, /CHROME WEB STORE/);
     assert.match(response.body, new RegExp(`data-repository="${REPOSITORY}"`));
     assert.equal([...response.body.matchAll(/<button\b[^>]*\bdisabled\b/g)].length, 7);
     assert.doesNotMatch(response.body, /href=""/i);
@@ -249,13 +254,14 @@ test('landing link hydration accepts only HTTPS destinations and hardens externa
     const macos = makeWrapper('macosDownload');
     const repository = makeWrapper('repository');
     const chrome = makeWrapper('chromeStore');
+    const edge = makeWrapper('edgeStore');
     const downloads = {
       dataset: {
         androidDownload: ANDROID_DOWNLOAD,
         windowsDownload: WINDOWS_DOWNLOAD,
         macosDownload: MACOS_DOWNLOAD,
         repository: REPOSITORY,
-        chromeStore: '',
+        chromeStore: CHROME_STORE,
         edgeStore: '',
       },
     };
@@ -263,7 +269,7 @@ test('landing link hydration accepts only HTTPS destinations and hardens externa
       URL,
       document: {
         getElementById: (id) => (id === 'downloads' ? downloads : null),
-        querySelectorAll: () => [android, windows, macos, repository, chrome],
+        querySelectorAll: () => [android, windows, macos, repository, chrome, edge],
         createElement: () => ({}),
       },
     };
@@ -279,7 +285,10 @@ test('landing link hydration accepts only HTTPS destinations and hardens externa
     assert.equal(repository.child.href, REPOSITORY);
     assert.equal(repository.child.target, '_blank');
     assert.equal(repository.child.rel, 'noopener noreferrer');
-    assert.equal(chrome.child, undefined);
+    assert.equal(chrome.child.href, CHROME_STORE);
+    assert.equal(chrome.child.target, '_blank');
+    assert.equal(chrome.child.rel, 'noopener noreferrer');
+    assert.equal(edge.child, undefined);
   });
 });
 
